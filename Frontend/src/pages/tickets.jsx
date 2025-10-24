@@ -19,10 +19,18 @@ export default function Tickets() {
         headers: { Authorization: `Bearer ${token}` },
         method: "GET",
       })
+      
+      if (!res.ok) {
+        const data = await res.json()
+        console.error("Failed to fetch tickets:", data.message)
+        return
+      }
+      
       const data = await res.json()
       setTickets(data.tickets || [])
     } catch (err) {
       console.error("Failed to fetch tickets:", err)
+      alert("❌ Error loading tickets. Please refresh the page.")
     }
   }
 
@@ -36,6 +44,18 @@ export default function Tickets() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    
+    // Client-side validation
+    if (form.title.trim().length < 5) {
+      alert("Title must be at least 5 characters long")
+      return
+    }
+    
+    if (form.description.trim().length < 10) {
+      alert("Description must be at least 10 characters long")
+      return
+    }
+    
     setLoading(true)
     try {
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/tickets`, {
@@ -51,12 +71,12 @@ export default function Tickets() {
         setForm({ title: "", description: "" })
         setShowForm(false)
         fetchTickets() // Refresh list
-        alert("Ticket created successfully!")
+        alert("✅ Ticket created successfully! Our AI is analyzing it now and will assign it to the right moderator.")
       } else {
-        alert(data.message || "Ticket creation failed")
+        alert(data.message || "Failed to create ticket. Please try again.")
       }
     } catch (err) {
-      alert("Error creating ticket")
+      alert("❌ Error creating ticket. Please check your connection and try again.")
       console.error(err)
     } finally {
       setLoading(false)

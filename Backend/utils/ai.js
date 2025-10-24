@@ -1,13 +1,14 @@
 import { createAgent, gemini } from "@inngest/agent-kit";
 
 const analyzeTicket = async (ticket) => {
-  const supportAgent = createAgent({
-    model: gemini({
-      model: "gemini-1.5-flash-8b",
-      apiKey: process.env.GEMINI_API_KEY,
-    }),
-    name: "AI Ticket Triage Assistant",
-    system: `You are an expert AI assistant that processes technical support tickets. 
+  try {
+    const supportAgent = createAgent({
+      model: gemini({
+        model: "gemini-1.5-flash-8b",
+        apiKey: process.env.GEMINI_API_KEY,
+      }),
+      name: "AI Ticket Triage Assistant",
+      system: `You are an expert AI assistant that processes technical support tickets. 
 
 Your job is to:
 1. Summarize the issue.
@@ -21,10 +22,10 @@ IMPORTANT:
 - The format must be a raw JSON object.
 
 Repeat: Do not wrap your output in markdown or code fences.`,
-  });
+    });
 
-  const response =
-    await supportAgent.run(`You are a ticket triage agent. Only return a strict JSON object with no extra text, headers, or markdown.
+    const response =
+      await supportAgent.run(`You are a ticket triage agent. Only return a strict JSON object with no extra text, headers, or markdown.
         
 Analyze the following support ticket and provide a JSON object with:
 
@@ -49,16 +50,68 @@ Ticket information:
 - Title: ${ticket.title}
 - Description: ${ticket.description}`);
 
-  const raw = response.output[0].content;
+    const raw = response.output[0].content;
 
-  try {
-    const match = raw.match(/```json\s*([\s\S]*?)\s*```/i);
-    const jsonString = match ? match[1] : raw.trim();
-    return JSON.parse(jsonString);
-  } catch (e) {
-    console.log("Failed to parse JSON from AI response" + e.message);
-    return null; // watch out for this
+    // Try multiple parsing strategies
+    try {
+      // Strategy 1: Try to extract JSON from markdown code block
+      const markdownMatch = raw.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+      if (markdownMatch) {
+        const parsed = JSON.parse(markdownMatch[1].trim());
+        console.log("✅ Successfully parsed JSON from markdown block");
+        return validateTicketAnalysis(parsed);
+      }
+    } catch (e) {
+      console.log("❌ Failed to parse JSON from markdown block:", e.message);
+    }
+
+    try {
+      // Strategy 2: Try to find JSON object in the text
+      const jsonMatch = raw.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        console.log("✅ Successfully parsed JSON from text");
+        return validateTicketAnalysis(parsed);
+      }
+    } catch (e) {
+      console.log("❌ Failed to parse JSON from text:", e.message);
+    }
+
+    try {
+      // Strategy 3: Try to parse the raw response directly
+      const parsed = JSON.parse(raw.trim());
+      console.log("✅ Successfully parsed raw JSON");
+      return validateTicketAnalysis(parsed);
+    } catch (e) {
+      console.log("❌ Failed to parse raw JSON:", e.message);
+    }
+
+    // All parsing strategies failed
+    console.error("❌ All JSON parsing strategies failed. Raw response:", raw.substring(0, 200));
+    return null;
+
+  } catch (error) {
+    console.error("❌ Error in analyzeTicket:", error.message);
+    return null;
   }
+};
+
+// Validate and sanitize the parsed response
+const validateTicketAnalysis = (data) => {
+  // Ensure all required fields exist with fallbacks
+  const validated = {
+    summary: data.summary || "Unable to generate summary",
+    priority: ["low", "medium", "high"].includes(data.priority) ? data.priority : "medium",
+    helpfulNotes: data.helpfulNotes || "No additional notes available",
+    relatedSkills: Array.isArray(data.relatedSkills) ? data.relatedSkills : [],
+  };
+
+  // Ensure relatedSkills is not empty
+  if (validated.relatedSkills.length === 0) {
+    validated.relatedSkills = ["General Support"];
+  }
+
+  return validated;
 };
 
 export default analyzeTicket;

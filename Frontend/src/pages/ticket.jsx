@@ -32,17 +32,31 @@ export default function TicketDetailsPage() {
         setStatus(data.ticket.status)
         setSolution(data.ticket.solution || "")
       } else {
-        alert(data.message || "Failed to fetch ticket")
+        alert(data.message || "Failed to fetch ticket details")
+        console.error("Failed to fetch ticket:", data.message)
       }
     } catch (err) {
       console.error(err)
-      alert("Something went wrong")
+      alert("❌ Error loading ticket. Please check your connection.")
     } finally {
       setLoading(false)
     }
   }
 
   const updateTicket = async () => {
+    // Validation
+    if (!status) {
+      alert("Please select a status")
+      return
+    }
+
+    if (status === "RESOLVED" && !solution.trim()) {
+      const confirmEmpty = window.confirm(
+        "You're marking this ticket as RESOLVED without providing a solution. Are you sure?"
+      )
+      if (!confirmEmpty) return
+    }
+
     setUpdating(true)
     try {
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/tickets/${id}`, {
@@ -58,14 +72,14 @@ export default function TicketDetailsPage() {
       })
       const data = await res.json()
       if (res.ok) {
-        alert("Ticket updated successfully")
+        alert("✅ Ticket updated successfully!")
         fetchTicket() // Refresh ticket data
       } else {
-        alert(data.message || "Failed to update ticket")
+        alert(data.message || "Failed to update ticket. Please try again.")
       }
     } catch (err) {
       console.error(err)
-      alert("Something went wrong")
+      alert("❌ Error updating ticket. Please check your connection and try again.")
     } finally {
       setUpdating(false)
     }

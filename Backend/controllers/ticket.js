@@ -4,33 +4,59 @@ import Ticket from "../models/ticket.js"
 export const createTicket = async (req, res) => {
   try {
     const { title, description } = req.body
+    
+    // Validate required fields
     if (!title || !description) {
       return res.status(400).json({ message: "Title and description are required" })
     }
 
+    // Validate title length
+    if (title.trim().length < 5) {
+      return res.status(400).json({ message: "Title must be at least 5 characters long" })
+    }
+
+    // Validate description length
+    if (description.trim().length < 10) {
+      return res.status(400).json({ message: "Description must be at least 10 characters long" })
+    }
+
+    // Validate user exists
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "User authentication required" })
+    }
+
     const newTicket = await Ticket.create({
-      title,
-      description,
+      title: title.trim(),
+      description: description.trim(),
       createdBy: req.user._id.toString(),
+      status: "TODO",
     })
 
-    await inngest.send({
-      name: "ticket/created",
-      data: {
-        ticketId: newTicket._id.toString(),
-        title,
-        description,
-        createdBy: req.user._id.toString(),
-      },
-    })
+    // Send event to Inngest for AI processing
+    try {
+      await inngest.send({
+        name: "ticket/created",
+        data: {
+          ticketId: newTicket._id.toString(),
+          title: newTicket.title,
+          description: newTicket.description,
+          createdBy: req.user._id.toString(),
+        },
+      })
+      console.log(`✅ Ticket ${newTicket._id} sent to Inngest for processing`)
+    } catch (inngestError) {
+      console.error("❌ Failed to send event to Inngest:", inngestError.message)
+      // Don't fail the request if Inngest fails - ticket is still created
+      // The ticket will remain in TODO status and can be manually processed
+    }
 
     return res.status(201).json({
-      message: "Ticket created and processing started",
+      message: "Ticket created successfully. AI analysis in progress...",
       ticket: newTicket,
     })
   } catch (error) {
-    console.error("Error creating ticket", error.message)
-    return res.status(500).json({ message: "Internal Server Error" })
+    console.error("❌ Error creating ticket:", error.message)
+    return res.status(500).json({ message: "Failed to create ticket. Please try again." })
   }
 }
 
@@ -106,15 +132,21 @@ export const updateTicketStatus = async (req, res) => {
     const { status, solution } = req.body
     const user = req.user
 
+    // Validate status if provided
+    if (status && !["TODO", "IN_PROGRESS", "RESOLVED", "CLOSED"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status value" })
+    }
+
     // Only moderators and admins can update tickets
     if (user.role === "user") {
-      return res.status(403).json({ message: "Forbidden" })
+      return res.status(403).json({ message: "Only moderators and admins can update tickets" })
     }
 
     let ticket
     if (user.role === "admin") {
+      // Admin can update any ticket
       ticket = await Ticket.findById(req.params.id)
-    } else {
+    } else if (user.role === "moderator") {
       // Moderator can only update tickets assigned to them
       ticket = await Ticket.findOne({
         _id: req.params.id,
@@ -123,19 +155,45 @@ export const updateTicketStatus = async (req, res) => {
     }
 
     if (!ticket) {
-      return res.status(404).json({ message: "Ticket not found" })
+      return res.status(404).json({ 
+        message: user.role === "moderator" 
+          ? "Ticket not found or not assigned to you" 
+          : "Ticket not found" 
+      })
     }
 
-    const updateData = { status }
-    if (solution) {
-      updateData.solution = solution
+    // Prepare update data
+    const updateData = {}
+    
+    if (status) {
+      updateData.status = status
+    }
+    
+    if (solution !== undefined && solution !== null) {
+      updateData.solution = solution.trim()
     }
 
-    await Ticket.findByIdAndUpdate(req.params.id, updateData)
+    // Ensure at least one field is being updated
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ message: "No updates provided" })
+    }
 
-    return res.status(200).json({ message: "Ticket updated successfully" })
+    const updatedTicket = await Ticket.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    )
+      .populate("createdBy", ["email", "_id"])
+      .populate("assignedTo", ["email", "_id"])
+
+    console.log(`✅ Ticket ${req.params.id} updated by ${user.email}`)
+
+    return res.status(200).json({ 
+      message: "Ticket updated successfully",
+      ticket: updatedTicket 
+    })
   } catch (error) {
-    console.error("Error updating ticket", error.message)
-    return res.status(500).json({ message: "Internal Server Error" })
+    console.error("❌ Error updating ticket:", error.message)
+    return res.status(500).json({ message: "Failed to update ticket" })
   }
 }

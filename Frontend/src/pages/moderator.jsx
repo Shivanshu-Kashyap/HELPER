@@ -26,6 +26,14 @@ export default function ModeratorPanel() {
         headers: { Authorization: `Bearer ${token}` },
         method: "GET",
       })
+      
+      if (!res.ok) {
+        const data = await res.json()
+        console.error("Failed to fetch tickets:", data.message)
+        setLoading(false)
+        return
+      }
+      
       const data = await res.json()
       if (res.ok) {
         setTickets(data.tickets || [])
@@ -33,6 +41,7 @@ export default function ModeratorPanel() {
       }
     } catch (err) {
       console.error("Failed to fetch tickets:", err)
+      alert("❌ Error loading assigned tickets. Please refresh the page.")
     } finally {
       setLoading(false)
     }
