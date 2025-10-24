@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { PlusIcon, MinusIcon, DownloadIcon, UserIcon, FileTextIcon, GithubIcon, ExternalLinkIcon, FileCodeIcon } from "lucide-react"
+import { PlusIcon, MinusIcon, DownloadIcon, UserIcon, FileTextIcon, GithubIcon, ExternalLinkIcon, BoldIcon } from "lucide-react"
 
 export default function ResumeBuilder() {
   const [activeSection, setActiveSection] = useState("personal")
@@ -120,16 +120,6 @@ export default function ResumeBuilder() {
       ...prev,
       [field]: value,
     }))
-  }
-
-  const convertBoldToHtml = (text) => {
-    // Convert **text** to <strong>text</strong>
-    return text.split(/(\*\*.*?\*\*)/).map((part, i) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return <strong key={i}>{part.slice(2, -2)}</strong>
-      }
-      return part
-    })
   }
 
   const generateLatexResume = () => {
@@ -438,8 +428,8 @@ ${leadership
       {resumeData.coursework && (
         <div className="mb-5">
           <h2 className="text-lg font-bold border-b-2 border-black mb-3 uppercase">Relevant Coursework</h2>
-          <div className="grid grid-cols-3 gap-x-4 gap-y-1">
-            {resumeData.coursework.split(",").filter(c => c.trim()).map((course, index) => (
+          <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+            {resumeData.coursework.split(",").map((course, index) => (
               <div key={index} className="text-sm">• {course.trim()}</div>
             ))}
           </div>
@@ -462,11 +452,9 @@ ${leadership
                     </div>
                     <span className="text-sm font-semibold">{exp.duration}</span>
                   </div>
-                  {exp.points && exp.points.some(p => p.trim()) && (
-                    <ul className="list-disc list-inside ml-2 text-sm space-y-1">
-                      {exp.points.filter(p => p.trim()).map((point, pi) => (
-                        <li key={pi}>{convertBoldToHtml(point)}</li>
-                      ))}
+                  {exp.description && (
+                    <ul className="list-disc list-inside ml-2 text-sm">
+                      <li>{exp.description}</li>
                     </ul>
                   )}
                 </div>
@@ -484,32 +472,20 @@ ${leadership
               project.name && (
                 <div key={index} className="mb-4">
                   <div className="flex justify-between items-start mb-1">
-                    <div className="flex items-center gap-2">
+                    <div>
                       <strong className="text-base">{project.name}</strong>
                       {project.technologies && (
                         <>
-                          <span className="text-sm">|</span>
+                          <span className="text-sm"> | </span>
                           <em className="text-sm">{project.technologies}</em>
                         </>
-                      )}
-                      {project.githubLink && (
-                        <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                          <GithubIcon className="w-3.5 h-3.5" />
-                        </a>
-                      )}
-                      {project.liveLink && (
-                        <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                          <ExternalLinkIcon className="w-3.5 h-3.5" />
-                        </a>
                       )}
                     </div>
                     {project.duration && <span className="text-sm font-semibold">{project.duration}</span>}
                   </div>
-                  {project.points && project.points.some(p => p.trim()) && (
-                    <ul className="list-disc list-inside ml-2 text-sm space-y-1">
-                      {project.points.filter(p => p.trim()).map((point, pi) => (
-                        <li key={pi}>{convertBoldToHtml(point)}</li>
-                      ))}
+                  {project.description && (
+                    <ul className="list-disc list-inside ml-2 text-sm">
+                      <li>{project.description}</li>
                     </ul>
                   )}
                 </div>
@@ -519,16 +495,36 @@ ${leadership
       )}
 
       {/* Skills */}
-      {resumeData.skills.some((skill) => skill.items) && (
+      {Object.values(resumeData.skills).some((skill) => skill) && (
         <div className="mb-5">
           <h2 className="text-lg font-bold border-b-2 border-black mb-3 uppercase">Technical Skills</h2>
-          <ul className="space-y-1 text-sm list-none">
-            {resumeData.skills.filter(skill => skill.items.trim()).map((skill, index) => (
-              <li key={index}>
-                <strong>{skill.title}:</strong> {skill.items}
-              </li>
-            ))}
-          </ul>
+          <div className="space-y-1 text-sm">
+            {resumeData.skills.programming && (
+              <p>
+                <strong>Programming Languages:</strong> {resumeData.skills.programming}
+              </p>
+            )}
+            {resumeData.skills.frontend && (
+              <p>
+                <strong>Frontend Technologies:</strong> {resumeData.skills.frontend}
+              </p>
+            )}
+            {resumeData.skills.backend && (
+              <p>
+                <strong>Backend & Database:</strong> {resumeData.skills.backend}
+              </p>
+            )}
+            {resumeData.skills.devops && (
+              <p>
+                <strong>DevOps & Tools:</strong> {resumeData.skills.devops}
+              </p>
+            )}
+            {resumeData.skills.aiml && (
+              <p>
+                <strong>AI/ML & Libraries:</strong> {resumeData.skills.aiml}
+              </p>
+            )}
+          </div>
         </div>
       )}
 
@@ -538,7 +534,7 @@ ${leadership
           <h2 className="text-lg font-bold border-b-2 border-black mb-3 uppercase">Leadership & Extracurricular</h2>
           <ul className="list-disc list-inside space-y-1 text-sm">
             {resumeData.leadership.split("\n").filter(item => item.trim()).map((item, index) => (
-              <li key={index}>{convertBoldToHtml(item.trim())}</li>
+              <li key={index}>{item.trim()}</li>
             ))}
           </ul>
         </div>
@@ -558,7 +554,7 @@ ${leadership
             </div>
           </div>
           <h1 className="text-4xl font-bold text-white mb-4">Professional Resume Builder</h1>
-          <p className="text-gray-300 text-lg">Build your resume with LaTeX-powered templates - Use **text** for bold</p>
+          <p className="text-gray-300 text-lg">Build your resume with our LaTeX-powered template system</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -583,22 +579,17 @@ ${leadership
                 ))}
               </nav>
 
-              <div className="mt-6 space-y-3">
+              <div className="mt-6">
                 <button
-                  onClick={downloadLatex}
-                  className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-3 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg"
-                >
-                  <FileCodeIcon className="w-4 h-4" />
-                  <span>LaTeX</span>
-                </button>
-                
-                <button
-                  onClick={downloadPDF}
+                  onClick={downloadResume}
                   className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-lg"
                 >
                   <DownloadIcon className="w-4 h-4" />
-                  <span>PDF</span>
+                  <span>Download</span>
                 </button>
+                <div className="text-center text-xs text-gray-400 mt-2">
+                  LaTeX format (.tex)
+                </div>
               </div>
             </div>
           </div>
@@ -615,72 +606,74 @@ ${leadership
 
               {/* Personal Information */}
               {activeSection === "personal" && (
-                <div className="space-y-4">
+                <div>
                   <h3 className="text-xl font-semibold text-white mb-4">Personal Information</h3>
-                  <div>
-                    <label className="block text-white font-medium mb-2">Full Name *</label>
-                    <input
-                      type="text"
-                      value={resumeData.personal.fullName}
-                      onChange={(e) => updatePersonal("fullName", e.target.value)}
-                      className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                      placeholder="John Doe"
-                    />
-                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-white font-medium mb-2">Full Name *</label>
+                      <input
+                        type="text"
+                        value={resumeData.personal.fullName}
+                        onChange={(e) => updatePersonal("fullName", e.target.value)}
+                        className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                        placeholder="John Doe"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="block text-white font-medium mb-2">Location *</label>
-                    <input
-                      type="text"
-                      value={resumeData.personal.location}
-                      onChange={(e) => updatePersonal("location", e.target.value)}
-                      className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                      placeholder="City, State-ZIP"
-                    />
-                  </div>
+                    <div>
+                      <label className="block text-white font-medium mb-2">Location *</label>
+                      <input
+                        type="text"
+                        value={resumeData.personal.location}
+                        onChange={(e) => updatePersonal("location", e.target.value)}
+                        className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                        placeholder="City, State-ZIP"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="block text-white font-medium mb-2">Phone *</label>
-                    <input
-                      type="tel"
-                      value={resumeData.personal.phone}
-                      onChange={(e) => updatePersonal("phone", e.target.value)}
-                      className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                      placeholder="+1-234-567-8900"
-                    />
-                  </div>
+                    <div>
+                      <label className="block text-white font-medium mb-2">Phone *</label>
+                      <input
+                        type="tel"
+                        value={resumeData.personal.phone}
+                        onChange={(e) => updatePersonal("phone", e.target.value)}
+                        className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                        placeholder="+1-234-567-8900"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="block text-white font-medium mb-2">Email *</label>
-                    <input
-                      type="email"
-                      value={resumeData.personal.email}
-                      onChange={(e) => updatePersonal("email", e.target.value)}
-                      className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                      placeholder="your.email@example.com"
-                    />
-                  </div>
+                    <div>
+                      <label className="block text-white font-medium mb-2">Email *</label>
+                      <input
+                        type="email"
+                        value={resumeData.personal.email}
+                        onChange={(e) => updatePersonal("email", e.target.value)}
+                        className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                        placeholder="your.email@example.com"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="block text-white font-medium mb-2">LinkedIn URL</label>
-                    <input
-                      type="url"
-                      value={resumeData.personal.linkedin}
-                      onChange={(e) => updatePersonal("linkedin", e.target.value)}
-                      className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                      placeholder="https://linkedin.com/in/yourprofile"
-                    />
-                  </div>
+                    <div>
+                      <label className="block text-white font-medium mb-2">LinkedIn URL</label>
+                      <input
+                        type="url"
+                        value={resumeData.personal.linkedin}
+                        onChange={(e) => updatePersonal("linkedin", e.target.value)}
+                        className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                        placeholder="https://linkedin.com/in/yourprofile"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="block text-white font-medium mb-2">GitHub URL</label>
-                    <input
-                      type="url"
-                      value={resumeData.personal.github}
-                      onChange={(e) => updatePersonal("github", e.target.value)}
-                      className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                      placeholder="https://github.com/yourprofile"
-                    />
+                    <div>
+                      <label className="block text-white font-medium mb-2">GitHub URL</label>
+                      <input
+                        type="url"
+                        value={resumeData.personal.github}
+                        onChange={(e) => updatePersonal("github", e.target.value)}
+                        className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                        placeholder="https://github.com/yourprofile"
+                      />
+                    </div>
                   </div>
                 </div>
               )}
@@ -699,7 +692,7 @@ ${leadership
                     </button>
                   </div>
 
-                  <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                  <div className="space-y-4">
                     {resumeData.education.map((edu, index) => (
                       <div key={index} className="p-4 bg-white/5 rounded-lg border border-white/10">
                         <div className="flex items-center justify-between mb-3">
@@ -771,7 +764,7 @@ ${leadership
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-semibold text-white">Experience</h3>
                     <button
-                      onClick={() => addArrayItem("experience", { company: "", position: "", duration: "", points: [""] })}
+                      onClick={() => addArrayItem("experience", { company: "", position: "", duration: "", description: "" })}
                       className="flex items-center space-x-2 bg-orange-500/20 text-orange-300 border border-orange-500/30 px-3 py-2 rounded-lg hover:bg-orange-500/30 transition-all duration-300 text-sm"
                     >
                       <PlusIcon className="w-4 h-4" />
@@ -779,7 +772,7 @@ ${leadership
                     </button>
                   </div>
 
-                  <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                  <div className="space-y-4">
                     {resumeData.experience.map((exp, index) => (
                       <div key={index} className="p-4 bg-white/5 rounded-lg border border-white/10">
                         <div className="flex items-center justify-between mb-3">
@@ -829,36 +822,14 @@ ${leadership
                           </div>
 
                           <div>
-                            <div className="flex items-center justify-between mb-2">
-                              <label className="block text-white text-sm font-medium">Description Points * (Use **text** for bold)</label>
-                              <button
-                                onClick={() => addPoint("experience", index)}
-                                className="text-orange-300 hover:text-orange-200 transition-colors"
-                              >
-                                <PlusIcon className="w-4 h-4" />
-                              </button>
-                            </div>
-                            <div className="space-y-2">
-                              {exp.points.map((point, pointIndex) => (
-                                <div key={pointIndex} className="flex gap-2">
-                                  <input
-                                    type="text"
-                                    value={point}
-                                    onChange={(e) => updatePoint("experience", index, pointIndex, e.target.value)}
-                                    className="flex-1 bg-white/10 border border-white/30 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                                    placeholder="Achieved **20% improvement** in system performance..."
-                                  />
-                                  {exp.points.length > 1 && (
-                                    <button
-                                      onClick={() => removePoint("experience", index, pointIndex)}
-                                      className="text-red-400 hover:text-red-300 transition-colors"
-                                    >
-                                      <MinusIcon className="w-4 h-4" />
-                                    </button>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
+                            <label className="block text-white text-sm font-medium mb-1">Description *</label>
+                            <textarea
+                              value={exp.description}
+                              onChange={(e) => updateArrayField("experience", index, "description", e.target.value)}
+                              rows={3}
+                              className="w-full bg-white/10 border border-white/30 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-orange-500 focus:outline-none resize-none"
+                              placeholder="Describe your role and achievements..."
+                            />
                           </div>
                         </div>
                       </div>
@@ -873,7 +844,7 @@ ${leadership
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-semibold text-white">Projects</h3>
                     <button
-                      onClick={() => addArrayItem("projects", { name: "", technologies: "", duration: "", points: [""], githubLink: "", liveLink: "" })}
+                      onClick={() => addArrayItem("projects", { name: "", technologies: "", duration: "", description: "" })}
                       className="flex items-center space-x-2 bg-orange-500/20 text-orange-300 border border-orange-500/30 px-3 py-2 rounded-lg hover:bg-orange-500/30 transition-all duration-300 text-sm"
                     >
                       <PlusIcon className="w-4 h-4" />
@@ -881,7 +852,7 @@ ${leadership
                     </button>
                   </div>
 
-                  <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                  <div className="space-y-4">
                     {resumeData.projects.map((project, index) => (
                       <div key={index} className="p-4 bg-white/5 rounded-lg border border-white/10">
                         <div className="flex items-center justify-between mb-3">
@@ -919,78 +890,26 @@ ${leadership
                             />
                           </div>
 
-                          <div className="grid grid-cols-2 gap-2">
-                            <div>
-                              <label className="block text-white text-sm font-medium mb-1">Duration</label>
-                              <input
-                                type="text"
-                                value={project.duration}
-                                onChange={(e) => updateArrayField("projects", index, "duration", e.target.value)}
-                                className="w-full bg-white/10 border border-white/30 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                                placeholder="Jan 2024"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-2">
-                            <div>
-                              <label className="flex items-center gap-1 text-white text-sm font-medium mb-1">
-                                <GithubIcon className="w-3 h-3" /> GitHub Link
-                              </label>
-                              <input
-                                type="url"
-                                value={project.githubLink}
-                                onChange={(e) => updateArrayField("projects", index, "githubLink", e.target.value)}
-                                className="w-full bg-white/10 border border-white/30 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                                placeholder="https://github.com/..."
-                              />
-                            </div>
-
-                            <div>
-                              <label className="flex items-center gap-1 text-white text-sm font-medium mb-1">
-                                <ExternalLinkIcon className="w-3 h-3" /> Live Link
-                              </label>
-                              <input
-                                type="url"
-                                value={project.liveLink}
-                                onChange={(e) => updateArrayField("projects", index, "liveLink", e.target.value)}
-                                className="w-full bg-white/10 border border-white/30 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                                placeholder="https://example.com"
-                              />
-                            </div>
+                          <div>
+                            <label className="block text-white text-sm font-medium mb-1">Duration</label>
+                            <input
+                              type="text"
+                              value={project.duration}
+                              onChange={(e) => updateArrayField("projects", index, "duration", e.target.value)}
+                              className="w-full bg-white/10 border border-white/30 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                              placeholder="Jan 2024"
+                            />
                           </div>
 
                           <div>
-                            <div className="flex items-center justify-between mb-2">
-                              <label className="block text-white text-sm font-medium">Description Points * (Use **text** for bold)</label>
-                              <button
-                                onClick={() => addPoint("projects", index)}
-                                className="text-orange-300 hover:text-orange-200 transition-colors"
-                              >
-                                <PlusIcon className="w-4 h-4" />
-                              </button>
-                            </div>
-                            <div className="space-y-2">
-                              {project.points.map((point, pointIndex) => (
-                                <div key={pointIndex} className="flex gap-2">
-                                  <input
-                                    type="text"
-                                    value={point}
-                                    onChange={(e) => updatePoint("projects", index, pointIndex, e.target.value)}
-                                    className="flex-1 bg-white/10 border border-white/30 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                                    placeholder="Built a **full-stack** application with **real-time** features..."
-                                  />
-                                  {project.points.length > 1 && (
-                                    <button
-                                      onClick={() => removePoint("projects", index, pointIndex)}
-                                      className="text-red-400 hover:text-red-300 transition-colors"
-                                    >
-                                      <MinusIcon className="w-4 h-4" />
-                                    </button>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
+                            <label className="block text-white text-sm font-medium mb-1">Description *</label>
+                            <textarea
+                              value={project.description}
+                              onChange={(e) => updateArrayField("projects", index, "description", e.target.value)}
+                              rows={3}
+                              className="w-full bg-white/10 border border-white/30 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-orange-500 focus:outline-none resize-none"
+                              placeholder="Describe your project..."
+                            />
                           </div>
                         </div>
                       </div>
@@ -1003,34 +922,61 @@ ${leadership
               {activeSection === "skills" && (
                 <div>
                   <h3 className="text-xl font-semibold text-white mb-4">Technical Skills</h3>
-                  <p className="text-sm text-gray-300 mb-4">Customize skill categories and add comma-separated items</p>
                   <div className="space-y-4">
-                    {resumeData.skills.map((skill, index) => (
-                      <div key={index} className="p-4 bg-white/5 rounded-lg border border-white/10">
-                        <div className="space-y-3">
-                          <div>
-                            <label className="block text-white text-sm font-medium mb-1">Category Title</label>
-                            <input
-                              type="text"
-                              value={skill.title}
-                              onChange={(e) => updateSkills(index, "title", e.target.value)}
-                              className="w-full bg-white/10 border border-white/30 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                              placeholder="Programming Languages"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-white text-sm font-medium mb-1">Skills (comma-separated)</label>
-                            <input
-                              type="text"
-                              value={skill.items}
-                              onChange={(e) => updateSkills(index, "items", e.target.value)}
-                              className="w-full bg-white/10 border border-white/30 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-orange-500 focus:outline-none"
-                              placeholder="Python, JavaScript, Java, C++"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                    <div>
+                      <label className="block text-white font-medium mb-2">Programming Languages</label>
+                      <input
+                        type="text"
+                        value={resumeData.skills.programming}
+                        onChange={(e) => updateSkills("programming", e.target.value)}
+                        className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                        placeholder="Python, JavaScript, Java, C++"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-white font-medium mb-2">Frontend Technologies</label>
+                      <input
+                        type="text"
+                        value={resumeData.skills.frontend}
+                        onChange={(e) => updateSkills("frontend", e.target.value)}
+                        className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                        placeholder="React, Next.js, Tailwind CSS"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-white font-medium mb-2">Backend & Database</label>
+                      <input
+                        type="text"
+                        value={resumeData.skills.backend}
+                        onChange={(e) => updateSkills("backend", e.target.value)}
+                        className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                        placeholder="Node.js, Express, MongoDB, PostgreSQL"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-white font-medium mb-2">DevOps & Tools</label>
+                      <input
+                        type="text"
+                        value={resumeData.skills.devops}
+                        onChange={(e) => updateSkills("devops", e.target.value)}
+                        className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                        placeholder="Git, Docker, AWS, CI/CD"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-white font-medium mb-2">AI/ML & Libraries</label>
+                      <input
+                        type="text"
+                        value={resumeData.skills.aiml}
+                        onChange={(e) => updateSkills("aiml", e.target.value)}
+                        className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none"
+                        placeholder="TensorFlow, PyTorch, NumPy, Pandas"
+                      />
+                    </div>
                   </div>
                 </div>
               )}
@@ -1039,7 +985,6 @@ ${leadership
               {activeSection === "coursework" && (
                 <div>
                   <h3 className="text-xl font-semibold text-white mb-4">Relevant Coursework</h3>
-                  <p className="text-sm text-gray-300 mb-4">3 courses per line in preview</p>
                   <div>
                     <label className="block text-white font-medium mb-2">Courses (comma-separated)</label>
                     <textarea
@@ -1047,7 +992,7 @@ ${leadership
                       onChange={(e) => updateTextField("coursework", e.target.value)}
                       rows={5}
                       className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none resize-none"
-                      placeholder="Data Structures, Algorithms, Database Management, Machine Learning, Web Development, Operating Systems"
+                      placeholder="Data Structures, Algorithms, Database Management, Machine Learning"
                     />
                   </div>
                 </div>
@@ -1057,15 +1002,14 @@ ${leadership
               {activeSection === "leadership" && (
                 <div>
                   <h3 className="text-xl font-semibold text-white mb-4">Leadership & Extracurricular</h3>
-                  <p className="text-sm text-gray-300 mb-4">One activity per line. Use **text** for bold.</p>
                   <div>
-                    <label className="block text-white font-medium mb-2">Activities & Achievements</label>
+                    <label className="block text-white font-medium mb-2">Activities & Achievements (one per line)</label>
                     <textarea
                       value={resumeData.leadership}
                       onChange={(e) => updateTextField("leadership", e.target.value)}
                       rows={8}
                       className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-orange-500 focus:outline-none resize-none"
-                      placeholder="**Team Lead** for college coding club with **50+ members**&#10;Organized tech workshop with **200+ attendees**&#10;Won **first place** in national hackathon"
+                      placeholder="Team Lead for college coding club&#10;Organized tech workshop with 200+ attendees&#10;Won first place in hackathon"
                     />
                   </div>
                 </div>
