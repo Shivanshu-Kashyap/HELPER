@@ -1,7 +1,7 @@
 "use client"
 
 import { Link, useNavigate, useLocation } from "react-router-dom"
-import { BrainCircuitIcon, MenuIcon, XIcon } from "lucide-react"
+import { BrainCircuitIcon, MenuIcon, XIcon, ChevronRightIcon } from "lucide-react"
 import { useState, useEffect } from "react"
 
 export default function Navbar() {
@@ -40,33 +40,34 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-slate-900/80 backdrop-blur-md border-b border-white/10 shadow-lg" : "bg-transparent"
+      className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${scrolled
+        ? "bg-black/80 backdrop-blur-xl border-white/10"
+        : "bg-transparent border-transparent"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            {/* <div className="relative">
-              <div className="absolute inset-0 bg-blue-500 blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
-              <BrainCircuitIcon className="w-8 h-8 text-blue-400 relative z-10 transform group-hover:scale-110 transition-transform duration-300" />
+          <Link to="/" className="flex items-center space-x-3 group">
+            {/* <div className="bg-white/10 p-2 rounded-lg group-hover:bg-orange-500/20 transition-colors duration-300">
+              <BrainCircuitIcon className="w-6 h-6 text-white group-hover:text-orange-500 transition-colors duration-300" />
             </div> */}
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight">
+            <span className="text-xl font-bold text-white tracking-tight">
               HELPER
             </span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-1">
+            <div className="flex items-center space-x-8">
               {token &&
                 navItems.map((item) => (
                   <Link
                     key={item.name}
                     to={item.path}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isActive(item.path)
-                        ? "bg-white/10 text-white shadow-inner"
-                        : "text-gray-300 hover:text-white hover:bg-white/5"
+                    className={`text-sm font-medium transition-colors duration-300 ${isActive(item.path)
+                      ? "text-white"
+                      : "text-zinc-400 hover:text-white"
                       }`}
                   >
                     {item.name}
@@ -76,47 +77,46 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Auth */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
             {!token ? (
               <>
                 <Link
                   to="/login"
-                  className="text-gray-300 hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 hover:bg-white/5"
+                  className="text-zinc-400 hover:text-white text-sm font-medium transition-colors duration-300"
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="relative group overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-full text-sm font-medium shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition-all duration-300 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 flex items-center"
                 >
-                  <span className="relative z-10">Sign Up</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  Get Started
+                  <ChevronRightIcon className="w-4 h-4 ml-1" />
                 </Link>
               </>
             ) : (
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-300 text-sm font-medium">
-                  Hi, <span className="text-blue-400">{user?.email?.split("@")[0]}</span>
-                </span>
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-white text-xs font-bold">
+                    {user?.email?.[0].toUpperCase()}
+                  </div>
+                  <span className="text-zinc-300 text-sm font-medium hidden lg:block">
+                    {user?.email?.split("@")[0]}
+                  </span>
+                </div>
+
                 {user && user?.role === "admin" && (
                   <Link
                     to="/admin"
-                    className="text-yellow-400 hover:text-yellow-300 px-3 py-1 rounded-full text-xs font-bold border border-yellow-400/30 hover:bg-yellow-400/10 transition-all duration-300"
+                    className="text-amber-400 hover:text-amber-300 text-xs font-bold uppercase tracking-wider border border-amber-500/30 px-2 py-1 rounded hover:bg-amber-500/10 transition-all"
                   >
-                    ADMIN
+                    Admin
                   </Link>
                 )}
-                {user && user?.role === "moderator" && (
-                  <Link
-                    to="/moderator"
-                    className="text-green-400 hover:text-green-300 px-3 py-1 rounded-full text-xs font-bold border border-green-400/30 hover:bg-green-400/10 transition-all duration-300"
-                  >
-                    MOD
-                  </Link>
-                )}
+
                 <button
                   onClick={logout}
-                  className="text-gray-300 hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 hover:bg-red-500/10 hover:text-red-400"
+                  className="text-zinc-400 hover:text-white text-sm font-medium transition-colors duration-300"
                 >
                   Logout
                 </button>
@@ -128,7 +128,7 @@ export default function Navbar() {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-300 hover:text-white p-2 rounded-lg transition-colors duration-300 hover:bg-white/5"
+              className="text-zinc-400 hover:text-white p-2 transition-colors duration-300"
             >
               {isMenuOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
             </button>
@@ -140,15 +140,15 @@ export default function Navbar() {
           className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
             }`}
         >
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-slate-800/90 backdrop-blur-md rounded-2xl border border-white/10 mt-2 mb-4 shadow-xl">
+          <div className="py-4 space-y-2 border-t border-white/10 bg-black/95 backdrop-blur-xl">
             {token &&
               navItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`block px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 ${isActive(item.path)
-                      ? "bg-blue-600/20 text-blue-400"
-                      : "text-gray-300 hover:text-white hover:bg-white/5"
+                  className={`block px-4 py-3 text-base font-medium transition-colors duration-300 ${isActive(item.path)
+                    ? "text-orange-500 bg-orange-500/10 border-l-2 border-orange-500"
+                    : "text-zinc-400 hover:text-white hover:bg-white/5"
                     }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -156,57 +156,34 @@ export default function Navbar() {
                 </Link>
               ))}
 
-            <div className="border-t border-white/10 pt-4 mt-2 space-y-2">
+            <div className="pt-4 mt-2 border-t border-white/10 space-y-3 px-4">
               {!token ? (
                 <>
                   <Link
                     to="/login"
-                    className="block px-4 py-3 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-300"
+                    className="block w-full text-center py-3 text-zinc-400 hover:text-white font-medium transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
                     to="/signup"
-                    className="block px-4 py-3 rounded-xl text-base font-medium bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center hover:shadow-lg transition-all duration-300"
+                    className="block w-full bg-orange-500 text-white text-center py-3 rounded-lg font-medium hover:bg-orange-600 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Sign Up
+                    Get Started
                   </Link>
                 </>
               ) : (
-                <>
-                  <div className="px-4 py-2 text-sm text-gray-400">
-                    Signed in as <span className="text-white font-medium">{user?.email}</span>
-                  </div>
-                  {user && user?.role === "admin" && (
-                    <Link
-                      to="/admin"
-                      className="block px-4 py-3 rounded-xl text-base font-medium text-yellow-400 hover:bg-yellow-400/10 transition-all duration-300"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Admin Panel
-                    </Link>
-                  )}
-                  {user && user?.role === "moderator" && (
-                    <Link
-                      to="/moderator"
-                      className="block px-4 py-3 rounded-xl text-base font-medium text-green-400 hover:bg-green-400/10 transition-all duration-300"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Moderator Panel
-                    </Link>
-                  )}
-                  <button
-                    onClick={() => {
-                      logout()
-                      setIsMenuOpen(false)
-                    }}
-                    className="block w-full text-left px-4 py-3 rounded-xl text-base font-medium text-red-400 hover:bg-red-500/10 transition-all duration-300"
-                  >
-                    Logout
-                  </button>
-                </>
+                <button
+                  onClick={() => {
+                    logout()
+                    setIsMenuOpen(false)
+                  }}
+                  className="block w-full text-left py-3 text-red-400 hover:text-red-300 font-medium transition-colors"
+                >
+                  Logout
+                </button>
               )}
             </div>
           </div>

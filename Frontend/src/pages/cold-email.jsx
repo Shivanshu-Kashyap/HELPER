@@ -108,34 +108,34 @@ export default function ColdEmailGenerator() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-black py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-emerald-900/20 to-transparent"></div>
-        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-600/10 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-teal-600/10 rounded-full blur-[120px]"></div>
+        <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-zinc-900/20 to-transparent"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-500/5 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-amber-500/5 rounded-full blur-[120px]"></div>
       </div>
 
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center space-x-2 bg-emerald-500/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-emerald-500/20">
-            <SparklesIcon className="w-4 h-4 text-emerald-400" />
-            <span className="text-emerald-300 font-medium text-sm">AI-Powered Outreach</span>
+          <div className="inline-flex items-center space-x-2 bg-orange-500/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-orange-500/20">
+            <SparklesIcon className="w-4 h-4 text-orange-400" />
+            <span className="text-orange-300 font-medium text-sm">AI-Powered Outreach</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
-            Cold Email & <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Cover Letter</span> Generator
+            Cold Email & <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">Cover Letter</span> Generator
           </h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+          <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
             Craft personalized, high-converting outreach messages in seconds using advanced AI.
           </p>
         </div>
 
         {/* Progress Steps */}
         <div className="mb-12 relative">
-          <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-800 -translate-y-1/2 rounded-full z-0"></div>
+          <div className="absolute top-1/2 left-0 w-full h-1 bg-zinc-800 -translate-y-1/2 rounded-full z-0"></div>
           <div
-            className="absolute top-1/2 left-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 -translate-y-1/2 rounded-full z-0 transition-all duration-500"
+            className="absolute top-1/2 left-0 h-1 bg-gradient-to-r from-orange-500 to-amber-500 -translate-y-1/2 rounded-full z-0 transition-all duration-500"
             style={{ width: `${((step - 1) / 3) * 100}%` }}
           ></div>
           <div className="relative z-10 flex justify-between">
@@ -143,8 +143,8 @@ export default function ColdEmailGenerator() {
               <div
                 key={stepNum}
                 className={`flex items-center justify-center w-10 h-10 rounded-full border-4 transition-all duration-500 ${step >= stepNum
-                    ? "bg-slate-950 border-emerald-500 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
-                    : "bg-slate-900 border-slate-700 text-slate-500"
+                  ? "bg-black border-orange-500 text-orange-400 shadow-[0_0_15px_rgba(249,115,22,0.5)]"
+                  : "bg-zinc-900 border-zinc-700 text-zinc-500"
                   }`}
               >
                 {step > stepNum ? <CheckCircleIcon className="w-5 h-5" /> : <span className="font-bold">{stepNum}</span>}
@@ -154,7 +154,7 @@ export default function ColdEmailGenerator() {
         </div>
 
         {/* Content Area */}
-        <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl transition-all duration-500">
+        <div className="bg-zinc-900/40 backdrop-blur-xl rounded-3xl p-8 border border-white/5 shadow-2xl transition-all duration-500">
 
           {/* Step 1: Email Type Selection */}
           {step === 1 && (
@@ -164,16 +164,16 @@ export default function ColdEmailGenerator() {
                 <button
                   onClick={() => setEmailType("cold-email")}
                   className={`group relative p-8 rounded-2xl border-2 transition-all duration-300 text-left ${emailType === "cold-email"
-                      ? "border-emerald-500 bg-emerald-500/10 shadow-[0_0_30px_rgba(16,185,129,0.15)]"
-                      : "border-slate-700 bg-slate-800/50 hover:border-emerald-500/50 hover:bg-slate-800"
+                    ? "border-orange-500 bg-orange-500/10 shadow-[0_0_30px_rgba(249,115,22,0.15)]"
+                    : "border-zinc-700 bg-zinc-800/50 hover:border-orange-500/50 hover:bg-zinc-800"
                     }`}
                 >
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-colors ${emailType === "cold-email" ? "bg-emerald-500 text-white" : "bg-slate-700 text-slate-400 group-hover:bg-emerald-500/20 group-hover:text-emerald-400"
+                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-colors ${emailType === "cold-email" ? "bg-orange-500 text-white" : "bg-zinc-700 text-zinc-400 group-hover:bg-orange-500/20 group-hover:text-orange-400"
                     }`}>
                     <MailIcon className="w-7 h-7" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">Cold Email</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">
+                  <p className="text-zinc-400 text-sm leading-relaxed">
                     Perfect for networking, sales outreach, or contacting recruiters directly. Short, punchy, and persuasive.
                   </p>
                 </button>
@@ -181,16 +181,16 @@ export default function ColdEmailGenerator() {
                 <button
                   onClick={() => setEmailType("cover-letter")}
                   className={`group relative p-8 rounded-2xl border-2 transition-all duration-300 text-left ${emailType === "cover-letter"
-                      ? "border-emerald-500 bg-emerald-500/10 shadow-[0_0_30px_rgba(16,185,129,0.15)]"
-                      : "border-slate-700 bg-slate-800/50 hover:border-emerald-500/50 hover:bg-slate-800"
+                    ? "border-orange-500 bg-orange-500/10 shadow-[0_0_30px_rgba(249,115,22,0.15)]"
+                    : "border-zinc-700 bg-zinc-800/50 hover:border-orange-500/50 hover:bg-zinc-800"
                     }`}
                 >
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-colors ${emailType === "cover-letter" ? "bg-emerald-500 text-white" : "bg-slate-700 text-slate-400 group-hover:bg-emerald-500/20 group-hover:text-emerald-400"
+                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-colors ${emailType === "cover-letter" ? "bg-orange-500 text-white" : "bg-zinc-700 text-zinc-400 group-hover:bg-orange-500/20 group-hover:text-orange-400"
                     }`}>
                     <BrainCircuitIcon className="w-7 h-7" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">Cover Letter</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">
+                  <p className="text-zinc-400 text-sm leading-relaxed">
                     Professional, detailed letter for job applications. Highlights your experience and fit for the role.
                   </p>
                 </button>
@@ -199,9 +199,8 @@ export default function ColdEmailGenerator() {
               <div className="mt-10 flex justify-end">
                 <button
                   onClick={() => setStep(2)}
-                  className="group relative px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 overflow-hidden"
+                  className="group relative px-8 py-3 bg-orange-500 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-all duration-300 overflow-hidden"
                 >
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                   <span className="relative flex items-center">
                     Continue <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </span>
@@ -215,82 +214,82 @@ export default function ColdEmailGenerator() {
             <div className="animate-fade-in space-y-6">
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-bold text-white">Target Role Details</h2>
-                <p className="text-slate-400">Tell us about the position you're applying for</p>
+                <p className="text-zinc-400">Tell us about the position you're applying for</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Company Name *</label>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">Company Name *</label>
                   <input
                     type="text"
                     name="companyName"
                     value={jobInfo.companyName}
                     onChange={handleJobInfoChange}
-                    className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                     placeholder="e.g., Google"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Job Title *</label>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">Job Title *</label>
                   <input
                     type="text"
                     name="jobTitle"
                     value={jobInfo.jobTitle}
                     onChange={handleJobInfoChange}
-                    className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                     placeholder="e.g., Senior Software Engineer"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Hiring Manager (Optional)</label>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">Hiring Manager (Optional)</label>
                   <input
                     type="text"
                     name="hiringManagerName"
                     value={jobInfo.hiringManagerName}
                     onChange={handleJobInfoChange}
-                    className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                     placeholder="e.g., Sarah Connor"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Company Description</label>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">Company Description</label>
                   <input
                     type="text"
                     name="companyDescription"
                     value={jobInfo.companyDescription}
                     onChange={handleJobInfoChange}
-                    className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                     placeholder="Briefly describe what they do"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Job Description *</label>
+                <label className="block text-sm font-medium text-zinc-300 mb-2">Job Description *</label>
                 <textarea
                   name="jobDescription"
                   value={jobInfo.jobDescription}
                   onChange={handleJobInfoChange}
                   rows={4}
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                   placeholder="Paste the full job description here..."
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Key Requirements</label>
+                <label className="block text-sm font-medium text-zinc-300 mb-2">Key Requirements</label>
                 <textarea
                   name="jobRequirements"
                   value={jobInfo.jobRequirements}
                   onChange={handleJobInfoChange}
                   rows={3}
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                   placeholder="List specific skills or requirements to highlight..."
                 />
               </div>
@@ -298,14 +297,14 @@ export default function ColdEmailGenerator() {
               <div className="flex justify-between pt-6">
                 <button
                   onClick={() => setStep(1)}
-                  className="px-6 py-3 text-slate-300 hover:text-white font-medium transition-colors flex items-center"
+                  className="px-6 py-3 text-zinc-400 hover:text-white font-medium transition-colors flex items-center"
                 >
                   <ArrowLeftIcon className="w-5 h-5 mr-2" /> Back
                 </button>
                 <button
                   onClick={() => setStep(3)}
                   disabled={!jobInfo.companyName || !jobInfo.jobTitle || !jobInfo.jobDescription}
-                  className="px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                  className="px-8 py-3 bg-orange-500 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                 >
                   Continue <ArrowRightIcon className="w-5 h-5 ml-2" />
                 </button>
@@ -318,82 +317,82 @@ export default function ColdEmailGenerator() {
             <div className="animate-fade-in space-y-6">
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-bold text-white">Your Profile</h2>
-                <p className="text-slate-400">Help AI understand your background</p>
+                <p className="text-zinc-400">Help AI understand your background</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Full Name *</label>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">Full Name *</label>
                   <input
                     type="text"
                     name="fullName"
                     value={userInfo.fullName}
                     onChange={handleUserInfoChange}
-                    className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                     placeholder="John Doe"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Email *</label>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">Email *</label>
                   <input
                     type="email"
                     name="email"
                     value={userInfo.email}
                     onChange={handleUserInfoChange}
-                    className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                     placeholder="john@example.com"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Current Role</label>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">Current Role</label>
                   <input
                     type="text"
                     name="currentRole"
                     value={userInfo.currentRole}
                     onChange={handleUserInfoChange}
-                    className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                     placeholder="e.g., Software Developer"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">LinkedIn URL</label>
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">LinkedIn URL</label>
                   <input
                     type="url"
                     name="linkedinUrl"
                     value={userInfo.linkedinUrl}
                     onChange={handleUserInfoChange}
-                    className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                     placeholder="https://linkedin.com/in/..."
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Experience Summary *</label>
+                <label className="block text-sm font-medium text-zinc-300 mb-2">Experience Summary *</label>
                 <textarea
                   name="experience"
                   value={userInfo.experience}
                   onChange={handleUserInfoChange}
                   rows={3}
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                   placeholder="Briefly summarize your relevant experience..."
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Key Skills *</label>
+                <label className="block text-sm font-medium text-zinc-300 mb-2">Key Skills *</label>
                 <textarea
                   name="skills"
                   value={userInfo.skills}
                   onChange={handleUserInfoChange}
                   rows={2}
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                   placeholder="React, Node.js, Python, etc."
                   required
                 />
@@ -402,14 +401,14 @@ export default function ColdEmailGenerator() {
               <div className="flex justify-between pt-6">
                 <button
                   onClick={() => setStep(2)}
-                  className="px-6 py-3 text-slate-300 hover:text-white font-medium transition-colors flex items-center"
+                  className="px-6 py-3 text-zinc-400 hover:text-white font-medium transition-colors flex items-center"
                 >
                   <ArrowLeftIcon className="w-5 h-5 mr-2" /> Back
                 </button>
                 <button
                   onClick={generateContent}
                   disabled={!userInfo.fullName || !userInfo.email || !userInfo.experience || !userInfo.skills || loading}
-                  className="px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                  className="px-8 py-3 bg-orange-500 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                 >
                   {loading ? (
                     <>
@@ -430,23 +429,23 @@ export default function ColdEmailGenerator() {
           {step === 4 && (
             <div className="animate-fade-in">
               <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-500/20 text-orange-400 mb-4">
                   <CheckCircleIcon className="w-8 h-8" />
                 </div>
                 <h2 className="text-2xl font-bold text-white">Content Generated!</h2>
-                <p className="text-slate-400">Here is your personalized {emailType === "cold-email" ? "cold email" : "cover letter"}</p>
+                <p className="text-zinc-400">Here is your personalized {emailType === "cold-email" ? "cold email" : "cover letter"}</p>
               </div>
 
-              <div className="bg-slate-800/50 rounded-xl p-6 mb-8 border border-white/10 overflow-hidden relative group">
+              <div className="bg-zinc-800/50 rounded-xl p-6 mb-8 border border-white/10 overflow-hidden relative group">
                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
                     onClick={() => navigator.clipboard.writeText(generatedContent)}
-                    className="px-3 py-1 bg-slate-700 text-xs text-white rounded hover:bg-slate-600 transition-colors"
+                    className="px-3 py-1 bg-zinc-700 text-xs text-white rounded hover:bg-zinc-600 transition-colors"
                   >
                     Copy
                   </button>
                 </div>
-                <pre className="whitespace-pre-wrap text-slate-300 font-sans text-sm leading-relaxed">
+                <pre className="whitespace-pre-wrap text-zinc-300 font-sans text-sm leading-relaxed">
                   {generatedContent}
                 </pre>
               </div>
@@ -454,13 +453,13 @@ export default function ColdEmailGenerator() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={resetForm}
-                  className="flex-1 px-6 py-3 border border-slate-600 text-white rounded-xl font-semibold hover:bg-white/5 transition-all duration-300"
+                  className="flex-1 px-6 py-3 border border-zinc-600 text-white rounded-xl font-semibold hover:bg-white/5 transition-all duration-300"
                 >
                   Create Another
                 </button>
                 <button
                   onClick={downloadContent}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 flex items-center justify-center"
+                  className="flex-1 px-6 py-3 bg-orange-500 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/20 hover:bg-orange-600 transition-all duration-300 flex items-center justify-center"
                 >
                   <DownloadIcon className="w-5 h-5 mr-2" />
                   Download Text File

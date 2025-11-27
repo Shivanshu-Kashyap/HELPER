@@ -547,12 +547,12 @@ ${leadership
   )
 
   return (
-    <div className="min-h-screen bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-black py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-orange-900/20 to-transparent"></div>
-        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-600/10 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-amber-600/10 rounded-full blur-[120px]"></div>
+        <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-zinc-900/20 to-transparent"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-500/5 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-amber-500/5 rounded-full blur-[120px]"></div>
       </div>
 
       <div className="max-w-[1600px] mx-auto relative z-10">
@@ -565,7 +565,7 @@ ${leadership
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
             Build Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">Dream Resume</span>
           </h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+          <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
             Create a professional, ATS-friendly resume in minutes with our LaTeX-powered builder.
           </p>
         </div>
@@ -573,16 +573,16 @@ ${leadership
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Sidebar */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl p-6 border border-white/10 shadow-xl sticky top-8">
-              <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Sections</h3>
+            <div className="bg-zinc-900/40 backdrop-blur-xl rounded-3xl p-6 border border-white/5 shadow-xl sticky top-8">
+              <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-4">Sections</h3>
               <nav className="space-y-2">
                 {sections.map((section) => (
                   <button
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
                     className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 group ${activeSection === section.id
-                        ? "bg-orange-500/20 text-orange-300 border border-orange-500/30 shadow-lg shadow-orange-500/10"
-                        : "text-slate-400 hover:bg-white/5 hover:text-white"
+                      ? "bg-orange-500/10 text-orange-300 border border-orange-500/20 shadow-lg shadow-orange-500/5"
+                      : "text-zinc-400 hover:bg-white/5 hover:text-white"
                       }`}
                   >
                     <div className={`transition-transform duration-300 ${activeSection === section.id ? "scale-110" : "group-hover:scale-110"}`}>
@@ -596,10 +596,10 @@ ${leadership
                 ))}
               </nav>
 
-              <div className="mt-8 pt-6 border-t border-white/10 space-y-3">
+              <div className="mt-8 pt-6 border-t border-white/5 space-y-3">
                 <button
                   onClick={downloadLatex}
-                  className="w-full flex items-center justify-center space-x-2 bg-slate-800 text-white px-4 py-3 rounded-xl hover:bg-slate-700 transition-all duration-300 border border-white/10 hover:border-white/20"
+                  className="w-full flex items-center justify-center space-x-2 bg-zinc-800 text-white px-4 py-3 rounded-xl hover:bg-zinc-700 transition-all duration-300 border border-zinc-700 hover:border-zinc-600"
                 >
                   <FileCodeIcon className="w-4 h-4" />
                   <span className="font-medium text-sm">Export LaTeX</span>
@@ -607,7 +607,7 @@ ${leadership
 
                 <button
                   onClick={downloadPDF}
-                  className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-orange-500 to-amber-600 text-white px-4 py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300 font-medium text-sm"
+                  className="w-full flex items-center justify-center space-x-2 bg-orange-500 text-white px-4 py-3 rounded-xl hover:bg-orange-600 shadow-lg shadow-orange-500/20 transition-all duration-300 font-medium text-sm"
                 >
                   <DownloadIcon className="w-4 h-4" />
                   <span>Download PDF</span>
@@ -618,7 +618,7 @@ ${leadership
 
           {/* Form Section */}
           <div className="lg:col-span-5">
-            <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-xl min-h-[600px]">
+            <div className="bg-zinc-900/40 backdrop-blur-xl rounded-3xl p-8 border border-white/5 shadow-xl min-h-[600px]">
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold text-white flex items-center">
                   {sections.find(s => s.id === activeSection)?.icon}
@@ -634,67 +634,67 @@ ${leadership
                 <div className="space-y-6 animate-fade-in">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-slate-400 text-sm font-medium mb-2">Full Name *</label>
+                      <label className="block text-zinc-400 text-sm font-medium mb-2">Full Name *</label>
                       <input
                         type="text"
                         value={resumeData.personal.fullName}
                         onChange={(e) => updatePersonal("fullName", e.target.value)}
-                        className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition-all duration-300"
+                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-all duration-300"
                         placeholder="John Doe"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-slate-400 text-sm font-medium mb-2">Location *</label>
+                      <label className="block text-zinc-400 text-sm font-medium mb-2">Location *</label>
                       <input
                         type="text"
                         value={resumeData.personal.location}
                         onChange={(e) => updatePersonal("location", e.target.value)}
-                        className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition-all duration-300"
+                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-all duration-300"
                         placeholder="City, State"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-slate-400 text-sm font-medium mb-2">Phone *</label>
+                      <label className="block text-zinc-400 text-sm font-medium mb-2">Phone *</label>
                       <input
                         type="tel"
                         value={resumeData.personal.phone}
                         onChange={(e) => updatePersonal("phone", e.target.value)}
-                        className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition-all duration-300"
+                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-all duration-300"
                         placeholder="+1 234 567 8900"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-slate-400 text-sm font-medium mb-2">Email *</label>
+                      <label className="block text-zinc-400 text-sm font-medium mb-2">Email *</label>
                       <input
                         type="email"
                         value={resumeData.personal.email}
                         onChange={(e) => updatePersonal("email", e.target.value)}
-                        className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition-all duration-300"
+                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-all duration-300"
                         placeholder="john@example.com"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-slate-400 text-sm font-medium mb-2">LinkedIn URL</label>
+                      <label className="block text-zinc-400 text-sm font-medium mb-2">LinkedIn URL</label>
                       <input
                         type="url"
                         value={resumeData.personal.linkedin}
                         onChange={(e) => updatePersonal("linkedin", e.target.value)}
-                        className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition-all duration-300"
+                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-all duration-300"
                         placeholder="https://linkedin.com/in/..."
                       />
                     </div>
 
                     <div>
-                      <label className="block text-slate-400 text-sm font-medium mb-2">GitHub URL</label>
+                      <label className="block text-zinc-400 text-sm font-medium mb-2">GitHub URL</label>
                       <input
                         type="url"
                         value={resumeData.personal.github}
                         onChange={(e) => updatePersonal("github", e.target.value)}
-                        className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition-all duration-300"
+                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-all duration-300"
                         placeholder="https://github.com/..."
                       />
                     </div>
@@ -717,12 +717,12 @@ ${leadership
 
                   <div className="space-y-6">
                     {resumeData.education.map((edu, index) => (
-                      <div key={index} className="p-6 bg-slate-800/30 rounded-2xl border border-white/5 relative group">
+                      <div key={index} className="p-6 bg-zinc-800/30 rounded-2xl border border-white/5 relative group">
                         <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                           {resumeData.education.length > 1 && (
                             <button
                               onClick={() => removeArrayItem("education", index)}
-                              className="text-slate-500 hover:text-red-400 transition-colors p-2"
+                              className="text-zinc-500 hover:text-red-400 transition-colors p-2"
                             >
                               <Trash2Icon className="w-4 h-4" />
                             </button>
@@ -731,46 +731,46 @@ ${leadership
 
                         <div className="grid grid-cols-1 gap-4">
                           <div>
-                            <label className="block text-slate-400 text-xs font-medium mb-1.5">Institution</label>
+                            <label className="block text-zinc-400 text-xs font-medium mb-1.5">Institution</label>
                             <input
                               type="text"
                               value={edu.institution}
                               onChange={(e) => updateArrayField("education", index, "institution", e.target.value)}
-                              className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                              className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
                               placeholder="University Name"
                             />
                           </div>
 
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-slate-400 text-xs font-medium mb-1.5">Degree</label>
+                              <label className="block text-zinc-400 text-xs font-medium mb-1.5">Degree</label>
                               <input
                                 type="text"
                                 value={edu.degree}
                                 onChange={(e) => updateArrayField("education", index, "degree", e.target.value)}
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
                                 placeholder="Degree"
                               />
                             </div>
                             <div>
-                              <label className="block text-slate-400 text-xs font-medium mb-1.5">Duration</label>
+                              <label className="block text-zinc-400 text-xs font-medium mb-1.5">Duration</label>
                               <input
                                 type="text"
                                 value={edu.duration}
                                 onChange={(e) => updateArrayField("education", index, "duration", e.target.value)}
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
                                 placeholder="Year"
                               />
                             </div>
                           </div>
 
                           <div>
-                            <label className="block text-slate-400 text-xs font-medium mb-1.5">GPA</label>
+                            <label className="block text-zinc-400 text-xs font-medium mb-1.5">GPA</label>
                             <input
                               type="text"
                               value={edu.gpa}
                               onChange={(e) => updateArrayField("education", index, "gpa", e.target.value)}
-                              className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                              className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
                               placeholder="GPA"
                             />
                           </div>
@@ -796,12 +796,12 @@ ${leadership
 
                   <div className="space-y-6">
                     {resumeData.experience.map((exp, index) => (
-                      <div key={index} className="p-6 bg-slate-800/30 rounded-2xl border border-white/5 relative group">
+                      <div key={index} className="p-6 bg-zinc-800/30 rounded-2xl border border-white/5 relative group">
                         <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                           {resumeData.experience.length > 1 && (
                             <button
                               onClick={() => removeArrayItem("experience", index)}
-                              className="text-slate-500 hover:text-red-400 transition-colors p-2"
+                              className="text-zinc-500 hover:text-red-400 transition-colors p-2"
                             >
                               <Trash2Icon className="w-4 h-4" />
                             </button>
@@ -809,71 +809,66 @@ ${leadership
                         </div>
 
                         <div className="grid grid-cols-1 gap-4">
+                          <div>
+                            <label className="block text-zinc-400 text-xs font-medium mb-1.5">Company</label>
+                            <input
+                              type="text"
+                              value={exp.company}
+                              onChange={(e) => updateArrayField("experience", index, "company", e.target.value)}
+                              className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                              placeholder="Company Name"
+                            />
+                          </div>
+
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-slate-400 text-xs font-medium mb-1.5">Company</label>
-                              <input
-                                type="text"
-                                value={exp.company}
-                                onChange={(e) => updateArrayField("experience", index, "company", e.target.value)}
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
-                                placeholder="Company Name"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-slate-400 text-xs font-medium mb-1.5">Position</label>
+                              <label className="block text-zinc-400 text-xs font-medium mb-1.5">Position</label>
                               <input
                                 type="text"
                                 value={exp.position}
                                 onChange={(e) => updateArrayField("experience", index, "position", e.target.value)}
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
                                 placeholder="Job Title"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-zinc-400 text-xs font-medium mb-1.5">Duration</label>
+                              <input
+                                type="text"
+                                value={exp.duration}
+                                onChange={(e) => updateArrayField("experience", index, "duration", e.target.value)}
+                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                                placeholder="e.g. Jan 2020 - Present"
                               />
                             </div>
                           </div>
 
                           <div>
-                            <label className="block text-slate-400 text-xs font-medium mb-1.5">Duration</label>
-                            <input
-                              type="text"
-                              value={exp.duration}
-                              onChange={(e) => updateArrayField("experience", index, "duration", e.target.value)}
-                              className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
-                              placeholder="Duration"
-                            />
-                          </div>
-
-                          <div>
-                            <div className="flex items-center justify-between mb-2">
-                              <label className="block text-slate-400 text-xs font-medium">Description Points</label>
-                              <button
-                                onClick={() => addPoint("experience", index)}
-                                className="text-orange-400 hover:text-orange-300 transition-colors text-xs flex items-center"
-                              >
-                                <PlusIcon className="w-3 h-3 mr-1" /> Add Point
-                              </button>
-                            </div>
+                            <label className="block text-zinc-400 text-xs font-medium mb-1.5">Key Achievements</label>
                             <div className="space-y-2">
                               {exp.points.map((point, pointIndex) => (
-                                <div key={pointIndex} className="flex gap-2 items-start">
-                                  <div className="mt-2.5 w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0"></div>
+                                <div key={pointIndex} className="flex gap-2">
                                   <input
                                     type="text"
                                     value={point}
                                     onChange={(e) => updatePoint("experience", index, pointIndex, e.target.value)}
-                                    className="flex-1 bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
-                                    placeholder="Description point (use **text** for bold)"
+                                    className="flex-1 bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                                    placeholder="• Achieved X by doing Y..."
                                   />
-                                  {exp.points.length > 1 && (
-                                    <button
-                                      onClick={() => removePoint("experience", index, pointIndex)}
-                                      className="text-slate-600 hover:text-red-400 transition-colors mt-2"
-                                    >
-                                      <MinusIcon className="w-4 h-4" />
-                                    </button>
-                                  )}
+                                  <button
+                                    onClick={() => removePoint("experience", index, pointIndex)}
+                                    className="text-zinc-600 hover:text-red-400 transition-colors px-2"
+                                  >
+                                    <MinusIcon className="w-4 h-4" />
+                                  </button>
                                 </div>
                               ))}
+                              <button
+                                onClick={() => addPoint("experience", index)}
+                                className="text-xs text-orange-400 hover:text-orange-300 font-medium flex items-center mt-2"
+                              >
+                                <PlusIcon className="w-3 h-3 mr-1" /> Add Point
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -898,12 +893,12 @@ ${leadership
 
                   <div className="space-y-6">
                     {resumeData.projects.map((project, index) => (
-                      <div key={index} className="p-6 bg-slate-800/30 rounded-2xl border border-white/5 relative group">
+                      <div key={index} className="p-6 bg-zinc-800/30 rounded-2xl border border-white/5 relative group">
                         <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                           {resumeData.projects.length > 1 && (
                             <button
                               onClick={() => removeArrayItem("projects", index)}
-                              className="text-slate-500 hover:text-red-400 transition-colors p-2"
+                              className="text-zinc-500 hover:text-red-400 transition-colors p-2"
                             >
                               <Trash2Icon className="w-4 h-4" />
                             </button>
@@ -911,93 +906,89 @@ ${leadership
                         </div>
 
                         <div className="grid grid-cols-1 gap-4">
+                          <div>
+                            <label className="block text-zinc-400 text-xs font-medium mb-1.5">Project Name</label>
+                            <input
+                              type="text"
+                              value={project.name}
+                              onChange={(e) => updateArrayField("projects", index, "name", e.target.value)}
+                              className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                              placeholder="Project Name"
+                            />
+                          </div>
+
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-slate-400 text-xs font-medium mb-1.5">Project Name</label>
-                              <input
-                                type="text"
-                                value={project.name}
-                                onChange={(e) => updateArrayField("projects", index, "name", e.target.value)}
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
-                                placeholder="Project Name"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-slate-400 text-xs font-medium mb-1.5">Technologies</label>
+                              <label className="block text-zinc-400 text-xs font-medium mb-1.5">Technologies</label>
                               <input
                                 type="text"
                                 value={project.technologies}
                                 onChange={(e) => updateArrayField("projects", index, "technologies", e.target.value)}
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
-                                placeholder="Tech Stack"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                                placeholder="React, Node.js..."
                               />
                             </div>
-                          </div>
-
-                          <div className="grid grid-cols-3 gap-4">
                             <div>
-                              <label className="block text-slate-400 text-xs font-medium mb-1.5">Duration</label>
+                              <label className="block text-zinc-400 text-xs font-medium mb-1.5">Duration</label>
                               <input
                                 type="text"
                                 value={project.duration}
                                 onChange={(e) => updateArrayField("projects", index, "duration", e.target.value)}
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
-                                placeholder="Duration"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                                placeholder="e.g. Jan 2023 - Mar 2023"
                               />
                             </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-slate-400 text-xs font-medium mb-1.5">GitHub</label>
+                              <label className="block text-zinc-400 text-xs font-medium mb-1.5">GitHub Link</label>
                               <input
                                 type="url"
                                 value={project.githubLink}
                                 onChange={(e) => updateArrayField("projects", index, "githubLink", e.target.value)}
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
-                                placeholder="URL"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                                placeholder="https://github.com/..."
                               />
                             </div>
                             <div>
-                              <label className="block text-slate-400 text-xs font-medium mb-1.5">Live Link</label>
+                              <label className="block text-zinc-400 text-xs font-medium mb-1.5">Live Link</label>
                               <input
                                 type="url"
                                 value={project.liveLink}
                                 onChange={(e) => updateArrayField("projects", index, "liveLink", e.target.value)}
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
-                                placeholder="URL"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                                placeholder="https://..."
                               />
                             </div>
                           </div>
 
                           <div>
-                            <div className="flex items-center justify-between mb-2">
-                              <label className="block text-slate-400 text-xs font-medium">Description Points</label>
-                              <button
-                                onClick={() => addPoint("projects", index)}
-                                className="text-orange-400 hover:text-orange-300 transition-colors text-xs flex items-center"
-                              >
-                                <PlusIcon className="w-3 h-3 mr-1" /> Add Point
-                              </button>
-                            </div>
+                            <label className="block text-zinc-400 text-xs font-medium mb-1.5">Key Features</label>
                             <div className="space-y-2">
                               {project.points.map((point, pointIndex) => (
-                                <div key={pointIndex} className="flex gap-2 items-start">
-                                  <div className="mt-2.5 w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0"></div>
+                                <div key={pointIndex} className="flex gap-2">
                                   <input
                                     type="text"
                                     value={point}
                                     onChange={(e) => updatePoint("projects", index, pointIndex, e.target.value)}
-                                    className="flex-1 bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
-                                    placeholder="Description point (use **text** for bold)"
+                                    className="flex-1 bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
+                                    placeholder="• Built X using Y..."
                                   />
-                                  {project.points.length > 1 && (
-                                    <button
-                                      onClick={() => removePoint("projects", index, pointIndex)}
-                                      className="text-slate-600 hover:text-red-400 transition-colors mt-2"
-                                    >
-                                      <MinusIcon className="w-4 h-4" />
-                                    </button>
-                                  )}
+                                  <button
+                                    onClick={() => removePoint("projects", index, pointIndex)}
+                                    className="text-zinc-600 hover:text-red-400 transition-colors px-2"
+                                  >
+                                    <MinusIcon className="w-4 h-4" />
+                                  </button>
                                 </div>
                               ))}
+                              <button
+                                onClick={() => addPoint("projects", index)}
+                                className="text-xs text-orange-400 hover:text-orange-300 font-medium flex items-center mt-2"
+                              >
+                                <PlusIcon className="w-3 h-3 mr-1" /> Add Point
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -1010,37 +1001,16 @@ ${leadership
               {/* Skills */}
               {activeSection === "skills" && (
                 <div className="animate-fade-in space-y-6">
-                  <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4 mb-6">
-                    <p className="text-orange-300 text-sm flex items-start">
-                      <SparklesIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
-                      Customize your skill categories. Add items separated by commas.
-                    </p>
-                  </div>
-
                   {resumeData.skills.map((skill, index) => (
-                    <div key={index} className="p-6 bg-slate-800/30 rounded-2xl border border-white/5">
-                      <div className="grid grid-cols-1 gap-4">
-                        <div>
-                          <label className="block text-slate-400 text-xs font-medium mb-1.5">Category Title</label>
-                          <input
-                            type="text"
-                            value={skill.title}
-                            onChange={(e) => updateSkills(index, "title", e.target.value)}
-                            className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
-                            placeholder="Category"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-slate-400 text-xs font-medium mb-1.5">Skills</label>
-                          <input
-                            type="text"
-                            value={skill.items}
-                            onChange={(e) => updateSkills(index, "items", e.target.value)}
-                            className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2.5 text-white text-sm focus:border-orange-500 focus:outline-none transition-colors"
-                            placeholder="Comma separated skills"
-                          />
-                        </div>
-                      </div>
+                    <div key={index} className="p-6 bg-zinc-800/30 rounded-2xl border border-white/5">
+                      <label className="block text-zinc-400 text-sm font-medium mb-2">{skill.title}</label>
+                      <textarea
+                        value={skill.items}
+                        onChange={(e) => updateSkills(index, "items", e.target.value)}
+                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-colors"
+                        placeholder="e.g. JavaScript, Python, React..."
+                        rows={3}
+                      />
                     </div>
                   ))}
                 </div>
@@ -1049,16 +1019,16 @@ ${leadership
               {/* Coursework */}
               {activeSection === "coursework" && (
                 <div className="animate-fade-in">
-                  <div className="bg-slate-800/30 rounded-2xl border border-white/5 p-6">
-                    <label className="block text-slate-400 text-sm font-medium mb-2">Relevant Coursework</label>
+                  <div className="p-6 bg-zinc-800/30 rounded-2xl border border-white/5">
+                    <label className="block text-zinc-400 text-sm font-medium mb-2">Relevant Coursework</label>
                     <textarea
                       value={resumeData.coursework}
                       onChange={(e) => updateTextField("coursework", e.target.value)}
+                      className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-colors"
+                      placeholder="e.g. Data Structures, Algorithms, Operating Systems..."
                       rows={6}
-                      className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition-all duration-300 resize-none"
-                      placeholder="Data Structures, Algorithms, Database Management..."
                     />
-                    <p className="text-slate-500 text-xs mt-2">Separate courses with commas.</p>
+                    <p className="text-xs text-zinc-500 mt-2">Separate courses with commas</p>
                   </div>
                 </div>
               )}
@@ -1066,16 +1036,16 @@ ${leadership
               {/* Leadership */}
               {activeSection === "leadership" && (
                 <div className="animate-fade-in">
-                  <div className="bg-slate-800/30 rounded-2xl border border-white/5 p-6">
-                    <label className="block text-slate-400 text-sm font-medium mb-2">Leadership & Extracurricular</label>
+                  <div className="p-6 bg-zinc-800/30 rounded-2xl border border-white/5">
+                    <label className="block text-zinc-400 text-sm font-medium mb-2">Leadership & Extracurricular</label>
                     <textarea
                       value={resumeData.leadership}
                       onChange={(e) => updateTextField("leadership", e.target.value)}
-                      rows={8}
-                      className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition-all duration-300 resize-none"
-                      placeholder="**Team Lead** for college coding club..."
+                      className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-colors"
+                      placeholder="• President of CS Club..."
+                      rows={6}
                     />
-                    <p className="text-slate-500 text-xs mt-2">One activity per line. Use **text** for bold.</p>
+                    <p className="text-xs text-zinc-500 mt-2">Enter each item on a new line</p>
                   </div>
                 </div>
               )}
@@ -1085,24 +1055,18 @@ ${leadership
           {/* Preview Section */}
           <div className="lg:col-span-5">
             <div className="sticky top-8">
-              <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl p-6 border border-white/10 shadow-xl">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-bold text-white flex items-center">
-                    <FileTextIcon className="w-5 h-5 mr-2 text-orange-400" />
-                    Live Preview
-                  </h3>
-                  <div className="flex items-center space-x-2">
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                    </span>
-                    <span className="text-xs text-slate-400 font-medium">Auto-updating</span>
-                  </div>
-                </div>
-                <div className="rounded-xl overflow-hidden shadow-2xl border border-white/10">
-                  <ResumePreview />
+              <div className="bg-zinc-800 rounded-t-3xl p-4 flex items-center justify-between border-b border-white/10">
+                <h3 className="text-white font-bold flex items-center">
+                  <FileTextIcon className="w-5 h-5 mr-2 text-orange-400" />
+                  Live Preview
+                </h3>
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
                 </div>
               </div>
+              <ResumePreview />
             </div>
           </div>
         </div>
