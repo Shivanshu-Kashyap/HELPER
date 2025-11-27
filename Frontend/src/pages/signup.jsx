@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { MailIcon, LockIcon, BrainCircuitIcon, ArrowRightIcon, Loader2, UserIcon, CodeIcon, BriefcaseIcon } from "lucide-react"
@@ -67,7 +65,7 @@ export default function SignupPage() {
 
       <div className="w-full max-w-md relative z-10 animate-fade-in">
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center space-x-2 group mb-6">
+          {/* <Link to="/" className="inline-flex items-center space-x-2 group mb-6">
             <div className="relative">
               <div className="absolute inset-0 bg-blue-500 blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
               <BrainCircuitIcon className="w-10 h-10 text-blue-400 relative z-10 transform group-hover:scale-110 transition-transform duration-300" />
@@ -75,7 +73,7 @@ export default function SignupPage() {
             <span className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight">
               HELPER
             </span>
-          </Link>
+          </Link> */}
           <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
           <p className="text-slate-400">Join the future of productivity</p>
         </div>
