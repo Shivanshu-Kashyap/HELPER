@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { PlusIcon, TicketIcon, UserIcon, CalendarIcon } from "lucide-react"
+import { PlusIcon, TicketIcon, UserIcon, CalendarIcon, SearchIcon, FilterIcon, Loader2 } from "lucide-react"
 
 export default function Tickets() {
   const [form, setForm] = useState({ title: "", description: "" })
   const [tickets, setTickets] = useState([])
   const [loading, setLoading] = useState(false)
   const [showForm, setShowForm] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
 
   const token = localStorage.getItem("token")
   const user = JSON.parse(localStorage.getItem("user") || "{}")
@@ -19,13 +20,13 @@ export default function Tickets() {
         headers: { Authorization: `Bearer ${token}` },
         method: "GET",
       })
-      
+
       if (!res.ok) {
         const data = await res.json()
         console.error("Failed to fetch tickets:", data.message)
         return
       }
-      
+
       const data = await res.json()
       setTickets(data.tickets || [])
     } catch (err) {
@@ -44,18 +45,17 @@ export default function Tickets() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
-    // Client-side validation
+
     if (form.title.trim().length < 5) {
       alert("Title must be at least 5 characters long")
       return
     }
-    
+
     if (form.description.trim().length < 10) {
       alert("Description must be at least 10 characters long")
       return
     }
-    
+
     setLoading(true)
     try {
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/tickets`, {
@@ -70,8 +70,8 @@ export default function Tickets() {
       if (res.ok) {
         setForm({ title: "", description: "" })
         setShowForm(false)
-        fetchTickets() // Refresh list
-        alert("✅ Ticket created successfully! Our AI is analyzing it now and will assign it to the right moderator.")
+        fetchTickets()
+        alert("✅ Ticket created successfully!")
       } else {
         alert(data.message || "Failed to create ticket. Please try again.")
       }
@@ -86,180 +86,178 @@ export default function Tickets() {
   const getStatusColor = (status) => {
     switch (status) {
       case "TODO":
-        return "text-yellow-400 bg-yellow-400/20"
+        return "text-yellow-400 bg-yellow-400/10 border-yellow-400/20"
       case "IN_PROGRESS":
-        return "text-blue-400 bg-blue-400/20"
+        return "text-blue-400 bg-blue-400/10 border-blue-400/20"
       case "RESOLVED":
-        return "text-green-400 bg-green-400/20"
+        return "text-emerald-400 bg-emerald-400/10 border-emerald-400/20"
       case "CLOSED":
-        return "text-gray-400 bg-gray-400/20"
+        return "text-slate-400 bg-slate-400/10 border-slate-400/20"
       default:
-        return "text-gray-400 bg-gray-400/20"
+        return "text-slate-400 bg-slate-400/10 border-slate-400/20"
     }
   }
 
   const getPriorityColor = (priority) => {
     switch (priority) {
       case "high":
-        return "text-red-400 bg-red-400/20"
+        return "text-red-400 bg-red-400/10 border-red-400/20"
       case "medium":
-        return "text-yellow-400 bg-yellow-400/20"
+        return "text-orange-400 bg-orange-400/10 border-orange-400/20"
       case "low":
-        return "text-green-400 bg-green-400/20"
+        return "text-blue-400 bg-blue-400/10 border-blue-400/20"
       default:
-        return "text-gray-400 bg-gray-400/20"
+        return "text-slate-400 bg-slate-400/10 border-slate-400/20"
     }
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-8">
-      <div className="max-w-6xl mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3">
-              <TicketIcon className="w-6 h-6 text-blue-400" />
-              <span className="text-white font-medium">AI Ticket System</span>
-            </div>
-          </div>
-          <h1 className="text-4xl font-bold text-white mb-4">Support Tickets</h1>
-          <p className="text-gray-300 text-lg">Create and manage your support tickets with AI assistance</p>
-        </div>
+  const filteredTickets = tickets.filter(ticket =>
+    ticket.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    ticket.description.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
-        {/* Create Ticket Button */}
-        <div className="mb-8 flex justify-center">
+  return (
+    <div className="min-h-screen bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-blue-900/20 to-transparent"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px]"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+          <div>
+            <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Support Tickets</h1>
+            <p className="text-slate-400">Manage and track your support requests</p>
+          </div>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300"
+            className="group relative px-6 py-3 bg-blue-600 rounded-xl font-semibold text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:bg-blue-500 transition-all duration-300 overflow-hidden"
           >
-            <PlusIcon className="w-5 h-5" />
-            <span>{showForm ? "Cancel" : "Create New Ticket"}</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span className="relative flex items-center space-x-2">
+              <PlusIcon className={`w-5 h-5 transition-transform duration-300 ${showForm ? "rotate-45" : ""}`} />
+              <span>{showForm ? "Cancel" : "New Ticket"}</span>
+            </span>
           </button>
         </div>
 
         {/* Create Ticket Form */}
-        {showForm && (
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 mb-8">
+        <div className={`transition-all duration-500 ease-in-out overflow-hidden ${showForm ? "max-h-[800px] opacity-100 mb-12" : "max-h-0 opacity-0"}`}>
+          <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl">
             <h2 className="text-2xl font-bold text-white mb-6">Create New Ticket</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-white font-medium mb-2">Title *</label>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Title</label>
                 <input
                   name="title"
                   value={form.title}
                   onChange={handleChange}
                   placeholder="Brief description of your issue"
-                  className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+                  className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-300"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-white font-medium mb-2">Description *</label>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
                 <textarea
                   name="description"
                   value={form.description}
                   onChange={handleChange}
                   placeholder="Provide detailed information about your issue..."
                   rows={4}
-                  className="w-full bg-white/10 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+                  className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-300"
                   required
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? "Creating Ticket..." : "Submit Ticket"}
-              </button>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-blue-500/25 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                >
+                  {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+                  <span>{loading ? "Creating..." : "Submit Ticket"}</span>
+                </button>
+              </div>
             </form>
           </div>
-        )}
-
-        {/* Tickets List */}
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-          <h2 className="text-2xl font-bold text-white mb-6">
-            {user.role === "admin" ? "All Tickets" : user.role === "moderator" ? "Assigned Tickets" : "Your Tickets"}
-          </h2>
-
-          {tickets.length === 0 ? (
-            <div className="text-center py-12">
-              <TicketIcon className="w-16 h-16 text-gray-400 mx-auto mb-4 opacity-50" />
-              <h3 className="text-xl font-semibold text-white mb-2">No tickets found</h3>
-              <p className="text-gray-400">
-                {user.role === "moderator"
-                  ? "You don't have any assigned tickets yet"
-                  : "Create your first support ticket to get started"}
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {tickets.map((ticket) => (
-                <Link
-                  key={ticket._id}
-                  to={`/tickets/${ticket._id}`}
-                  className="block bg-white/5 rounded-lg p-6 border border-white/10 hover:border-white/20 transition-all duration-300 hover:bg-white/10"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-xl font-semibold text-white mb-2">{ticket.title}</h3>
-                      <p className="text-gray-300 mb-3 line-clamp-2">{ticket.description}</p>
-
-                      <div className="flex items-center space-x-4 text-sm">
-                        <div className="flex items-center space-x-1 text-gray-400">
-                          <UserIcon className="w-4 h-4" />
-                          <span>
-                            {user.role === "user"
-                              ? ticket.assignedTo?.email || "Unassigned"
-                              : ticket.createdBy?.email || "Unknown"}
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-1 text-gray-400">
-                          <CalendarIcon className="w-4 h-4" />
-                          <span>{new Date(ticket.createdAt).toLocaleDateString()}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-end space-y-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(ticket.status)}`}>
-                        {ticket.status.replace("_", " ")}
-                      </span>
-
-                      {ticket.priority && (
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(ticket.priority)}`}
-                        >
-                          {ticket.priority.toUpperCase()}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {ticket.relatedSkills && ticket.relatedSkills.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {ticket.relatedSkills.slice(0, 3).map((skill, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs border border-blue-500/30"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                      {ticket.relatedSkills.length > 3 && (
-                        <span className="px-2 py-1 bg-gray-500/20 text-gray-300 rounded text-xs border border-gray-500/30">
-                          +{ticket.relatedSkills.length - 3} more
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </Link>
-              ))}
-            </div>
-          )}
         </div>
+
+        {/* Filters & Search */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <div className="relative flex-1">
+            <SearchIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+            <input
+              type="text"
+              placeholder="Search tickets..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-slate-900/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-300"
+            />
+          </div>
+          <button className="px-4 py-3 bg-slate-900/50 border border-white/10 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300 flex items-center space-x-2">
+            <FilterIcon className="w-5 h-5" />
+            <span>Filter</span>
+          </button>
+        </div>
+
+        {/* Tickets Grid */}
+        {filteredTickets.length === 0 ? (
+          <div className="text-center py-20 bg-slate-900/30 rounded-3xl border border-white/5 border-dashed">
+            <div className="bg-slate-800/50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <TicketIcon className="w-10 h-10 text-slate-500" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">No tickets found</h3>
+            <p className="text-slate-400 max-w-md mx-auto">
+              {searchTerm ? "Try adjusting your search terms" : "Create your first support ticket to get started with AI-powered assistance"}
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredTickets.map((ticket) => (
+              <Link
+                key={ticket._id}
+                to={`/tickets/${ticket._id}`}
+                className="group bg-slate-900/50 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 flex flex-col h-full"
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getStatusColor(ticket.status)}`}>
+                    {ticket.status.replace("_", " ")}
+                  </span>
+                  {ticket.priority && (
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getPriorityColor(ticket.priority)}`}>
+                      {ticket.priority}
+                    </span>
+                  )}
+                </div>
+
+                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors line-clamp-1">
+                  {ticket.title}
+                </h3>
+                <p className="text-slate-400 text-sm mb-6 line-clamp-2 flex-grow">
+                  {ticket.description}
+                </p>
+
+                <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-auto">
+                  <div className="flex items-center space-x-2 text-xs text-slate-500">
+                    <CalendarIcon className="w-4 h-4" />
+                    <span>{new Date(ticket.createdAt).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-xs text-slate-500">
+                    <UserIcon className="w-4 h-4" />
+                    <span className="truncate max-w-[100px]">
+                      {user.role === "user" ? ticket.assignedTo?.email || "Unassigned" : ticket.createdBy?.email}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
