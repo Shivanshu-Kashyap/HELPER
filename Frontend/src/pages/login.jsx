@@ -1,8 +1,6 @@
-"use client"
-
 import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { MailIcon, LockIcon, BrainCircuitIcon } from "lucide-react"
+import { MailIcon, LockIcon, BrainCircuitIcon, ArrowRightIcon, Loader2 } from "lucide-react"
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" })
@@ -41,34 +39,33 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center py-12 px-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-black flex items-center justify-center py-12 px-4 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-orange-500/5 rounded-full blur-[120px]"></div>
+      </div>
+
+      <div className="w-full max-w-md relative z-10 animate-fade-in">
         {/* Logo Section */}
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3">
-              <BrainCircuitIcon className="w-8 h-8 text-blue-400" />
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                HELPER
-              </span>
-            </div>
-          </div>
           <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-          <p className="text-gray-300">Sign in to your account to continue</p>
+          <p className="text-zinc-400">Sign in to access your AI workspace</p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+        <div className="bg-zinc-900/40 backdrop-blur-xl rounded-2xl p-8 border border-white/5 shadow-2xl">
           <form onSubmit={handleLogin} className="space-y-6">
-            <div>
-              <label className="block text-white font-medium mb-2">Email Address</label>
-              <div className="relative">
-                <MailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-zinc-300 ml-1">Email Address</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <MailIcon className="h-5 w-5 text-zinc-500 group-focus-within:text-orange-500 transition-colors" />
+                </div>
                 <input
                   type="email"
                   name="email"
-                  placeholder="Enter your email"
-                  className="w-full bg-white/10 border border-white/30 rounded-lg pl-12 pr-4 py-3 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+                  placeholder="name@example.com"
+                  className="block w-full pl-11 pr-4 py-3 bg-zinc-900/50 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                   value={form.email}
                   onChange={handleChange}
                   required
@@ -76,15 +73,22 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-white font-medium mb-2">Password</label>
-              <div className="relative">
-                <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <div className="space-y-2">
+              <div className="flex justify-between items-center ml-1">
+                <label className="block text-sm font-medium text-zinc-300">Password</label>
+                <a href="#" className="text-xs text-orange-400 hover:text-orange-300 transition-colors">
+                  Forgot password?
+                </a>
+              </div>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <LockIcon className="h-5 w-5 text-zinc-500 group-focus-within:text-orange-500 transition-colors" />
+                </div>
                 <input
                   type="password"
                   name="password"
-                  placeholder="Enter your password"
-                  className="w-full bg-white/10 border border-white/30 rounded-lg pl-12 pr-4 py-3 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+                  placeholder="••••••••"
+                  className="block w-full pl-11 pr-4 py-3 bg-zinc-900/50 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500 transition-all duration-300"
                   value={form.password}
                   onChange={handleChange}
                   required
@@ -94,51 +98,51 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3.5 rounded-xl font-semibold shadow-lg shadow-orange-500/20 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               disabled={loading}
             >
-              {loading ? "Signing In..." : "Sign In"}
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Signing In...
+                </>
+              ) : (
+                <>
+                  Sign In
+                  <ArrowRightIcon className="w-5 h-5" />
+                </>
+              )}
             </button>
           </form>
 
           {/* Sign Up Link */}
-          <div className="mt-6 text-center">
-            <p className="text-gray-400">
+          <div className="mt-8 text-center">
+            <p className="text-zinc-400">
               Don't have an account?{" "}
               <Link
                 to="/signup"
-                className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-300"
+                className="text-orange-400 hover:text-orange-300 font-semibold transition-colors duration-300"
               >
-                Sign up here
+                Create account
               </Link>
             </p>
           </div>
 
           {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
-            <h3 className="text-white font-medium mb-2">Demo Credentials:</h3>
-            <div className="text-sm text-gray-300 space-y-1">
-              <p>
-                <strong>Admin:</strong> admin@helper.com / password
-              </p>
-              <p>
-                <strong>User:</strong> user@example.com / password
-              </p>
+          <div className="mt-8 p-4 bg-zinc-900/50 rounded-xl border border-white/5">
+            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Demo Credentials</h3>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group"
+                onClick={() => setForm({ email: "admin@helper.com", password: "password" })}>
+                <span className="text-zinc-300">Admin</span>
+                <span className="text-zinc-500 group-hover:text-orange-400 transition-colors">admin@helper.com</span>
+              </div>
+              <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group"
+                onClick={() => setForm({ email: "user@example.com", password: "password" })}>
+                <span className="text-zinc-300">User</span>
+                <span className="text-zinc-500 group-hover:text-orange-400 transition-colors">user@example.com</span>
+              </div>
             </div>
-          </div>
-        </div>
-
-        {/* Features Preview */}
-        <div className="mt-8 text-center">
-          <p className="text-gray-400 text-sm mb-4">Access all HELPER features:</p>
-          <div className="flex justify-center space-x-6 text-xs text-gray-500">
-            <span>AI Tickets</span>
-            <span>•</span>
-            <span>Cold Emails</span>
-            <span>•</span>
-            <span>Resume Review</span>
-            <span>•</span>
-            <span>Resume Builder</span>
           </div>
         </div>
       </div>

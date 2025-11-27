@@ -1,17 +1,27 @@
 "use client"
 
-import { Link, useNavigate } from "react-router-dom"
-import { BrainCircuitIcon, MenuIcon, XIcon } from "lucide-react"
-import { useState } from "react"
+import { Link, useNavigate, useLocation } from "react-router-dom"
+import { BrainCircuitIcon, MenuIcon, XIcon, ChevronRightIcon } from "lucide-react"
+import { useState, useEffect } from "react"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const token = localStorage.getItem("token")
   let user = localStorage.getItem("user")
   if (user) {
     user = JSON.parse(user)
   }
   const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   const logout = () => {
     localStorage.removeItem("token")
@@ -26,27 +36,39 @@ export default function Navbar() {
     { name: "Resume Builder", path: "/resume-builder" },
   ]
 
+  const isActive = (path) => location.pathname === path
+
   return (
-    <nav className="bg-slate-900/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
+    <nav
+      className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${scrolled
+        ? "bg-black/80 backdrop-blur-xl border-white/10"
+        : "bg-transparent border-transparent"
+        }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <BrainCircuitIcon className="w-8 h-8 text-blue-400" />
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <Link to="/" className="flex items-center space-x-3 group">
+            {/* <div className="bg-white/10 p-2 rounded-lg group-hover:bg-orange-500/20 transition-colors duration-300">
+              <BrainCircuitIcon className="w-6 h-6 text-white group-hover:text-orange-500 transition-colors duration-300" />
+            </div> */}
+            <span className="text-xl font-bold text-white tracking-tight">
               HELPER
             </span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+            <div className="flex items-center space-x-8">
               {token &&
                 navItems.map((item) => (
                   <Link
                     key={item.name}
                     to={item.path}
-                    className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 hover:bg-white/10"
+                    className={`text-sm font-medium transition-colors duration-300 ${isActive(item.path)
+                      ? "text-white"
+                      : "text-zinc-400 hover:text-white"
+                      }`}
                   >
                     {item.name}
                   </Link>
@@ -55,44 +77,55 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Auth */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
             {!token ? (
               <>
                 <Link
                   to="/login"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+                  className="text-zinc-400 hover:text-white text-sm font-medium transition-colors duration-300"
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-300"
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition-all duration-300 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 flex items-center"
                 >
-                  Sign Up
+                  Get Started
+                  <ChevronRightIcon className="w-4 h-4 ml-1" />
                 </Link>
               </>
             ) : (
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-300 text-sm">Hi, {user?.email?.split("@")[0]}</span>
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-white text-xs font-bold">
+                    {user?.email?.[0].toUpperCase()}
+                  </div>
+                  <span className="text-zinc-300 text-sm font-medium hidden lg:block">
+                    {user?.email?.split("@")[0]}
+                  </span>
+                </div>
+
                 {user && user?.role === "admin" && (
                   <Link
                     to="/admin"
-                    className="text-yellow-400 hover:text-yellow-300 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+                    className="text-amber-400 hover:text-amber-300 text-xs font-bold uppercase tracking-wider border border-amber-500/30 px-2 py-1 rounded hover:bg-amber-500/10 transition-all"
                   >
                     Admin
                   </Link>
                 )}
+
                 {user && user?.role === "moderator" && (
                   <Link
                     to="/moderator"
-                    className="text-green-400 hover:text-green-300 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+                    className="text-blue-400 hover:text-blue-300 text-xs font-bold uppercase tracking-wider border border-blue-500/30 px-2 py-1 rounded hover:bg-blue-500/10 transition-all"
                   >
                     Moderator
                   </Link>
                 )}
+
                 <button
                   onClick={logout}
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 hover:bg-red-500/20"
+                  className="text-zinc-400 hover:text-white text-sm font-medium transition-colors duration-300"
                 >
                   Logout
                 </button>
@@ -104,7 +137,7 @@ export default function Navbar() {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-300 hover:text-white p-2 rounded-md transition-colors duration-300"
+              className="text-zinc-400 hover:text-white p-2 transition-colors duration-300"
             >
               {isMenuOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
             </button>
@@ -112,75 +145,78 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-slate-800/50 rounded-lg mt-2">
-              {token &&
-                navItems.map((item) => (
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+            }`}
+        >
+          <div className="py-4 space-y-2 border-t border-white/10 bg-black/95 backdrop-blur-xl">
+            {token &&
+              navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`block px-4 py-3 text-base font-medium transition-colors duration-300 ${isActive(item.path)
+                    ? "text-orange-500 bg-orange-500/10 border-l-2 border-orange-500"
+                    : "text-zinc-400 hover:text-white hover:bg-white/5"
+                    }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
+
+            <div className="pt-4 mt-2 border-t border-white/10 space-y-3 px-4">
+              {!token ? (
+                <>
                   <Link
-                    key={item.name}
-                    to={item.path}
-                    className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300 hover:bg-white/10"
+                    to="/login"
+                    className="block w-full text-center py-3 text-zinc-400 hover:text-white font-medium transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    {item.name}
+                    Login
                   </Link>
-                ))}
-
-              <div className="border-t border-white/10 pt-4 mt-4">
-                {!token ? (
-                  <div className="space-y-2">
+                  <Link
+                    to="/signup"
+                    className="block w-full bg-orange-500 text-white text-center py-3 rounded-lg font-medium hover:bg-orange-600 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Get Started
+                  </Link>
+                </>
+              ) : (
+                <>
+                  {user && user?.role === "admin" && (
                     <Link
-                      to="/login"
-                      className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300"
+                      to="/admin"
+                      className="block w-full text-left py-3 text-amber-400 hover:text-amber-300 font-medium transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Login
+                      Admin Panel
                     </Link>
+                  )}
+                  {user && user?.role === "moderator" && (
                     <Link
-                      to="/signup"
-                      className="bg-gradient-to-r from-blue-500 to-purple-600 text-white block px-3 py-2 rounded-md text-base font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-300"
+                      to="/moderator"
+                      className="block w-full text-left py-3 text-blue-400 hover:text-blue-300 font-medium transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Sign Up
+                      Moderator Panel
                     </Link>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <div className="text-gray-300 px-3 py-2 text-sm">Hi, {user?.email?.split("@")[0]}</div>
-                    {user && user?.role === "admin" && (
-                      <Link
-                        to="/admin"
-                        className="text-yellow-400 hover:text-yellow-300 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        Admin Panel
-                      </Link>
-                    )}
-                    {user && user?.role === "moderator" && (
-                      <Link
-                        to="/moderator"
-                        className="text-green-400 hover:text-green-300 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        Moderator Panel
-                      </Link>
-                    )}
-                    <button
-                      onClick={() => {
-                        logout()
-                        setIsMenuOpen(false)
-                      }}
-                      className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300 hover:bg-red-500/20 w-full text-left"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
+                  )}
+                  <button
+                    onClick={() => {
+                      logout()
+                      setIsMenuOpen(false)
+                    }}
+                    className="block w-full text-left py-3 text-red-400 hover:text-red-300 font-medium transition-colors"
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   )

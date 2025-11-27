@@ -1,2 +1,75 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@theme {
+    --font-sans: "Inter", sans-serif;
+
+    --color-primary: #f97316;
+    /* Orange 500 */
+    --color-primary-content: #ffffff;
+    --color-secondary: #fb923c;
+    /* Orange 400 */
+    --color-accent: #f59e0b;
+    /* Amber 500 */
+    --color-neutral: #18181b;
+    /* Zinc 900 */
+    --color-base-100: #09090b;
+    /* Zinc 950 */
+    --color-base-200: #000000;
+    /* Black */
+    --color-base-300: #18181b;
+    /* Zinc 900 */
+
+    --animate-fade-in: fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    --animate-slide-up: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slide-up {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+}
+
+:root {
+    font-family: "Inter", sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Premium Glassmorphism */
+.glass-panel {
+    background: rgba(24, 24, 27, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-button {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
