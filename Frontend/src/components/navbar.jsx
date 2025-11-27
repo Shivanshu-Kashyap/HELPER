@@ -114,6 +114,15 @@ export default function Navbar() {
                   </Link>
                 )}
 
+                {user && user?.role === "moderator" && (
+                  <Link
+                    to="/moderator"
+                    className="text-blue-400 hover:text-blue-300 text-xs font-bold uppercase tracking-wider border border-blue-500/30 px-2 py-1 rounded hover:bg-blue-500/10 transition-all"
+                  >
+                    Moderator
+                  </Link>
+                )}
+
                 <button
                   onClick={logout}
                   className="text-zinc-400 hover:text-white text-sm font-medium transition-colors duration-300"
@@ -175,15 +184,35 @@ export default function Navbar() {
                   </Link>
                 </>
               ) : (
-                <button
-                  onClick={() => {
-                    logout()
-                    setIsMenuOpen(false)
-                  }}
-                  className="block w-full text-left py-3 text-red-400 hover:text-red-300 font-medium transition-colors"
-                >
-                  Logout
-                </button>
+                <>
+                  {user && user?.role === "admin" && (
+                    <Link
+                      to="/admin"
+                      className="block w-full text-left py-3 text-amber-400 hover:text-amber-300 font-medium transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
+                  {user && user?.role === "moderator" && (
+                    <Link
+                      to="/moderator"
+                      className="block w-full text-left py-3 text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Moderator Panel
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => {
+                      logout()
+                      setIsMenuOpen(false)
+                    }}
+                    className="block w-full text-left py-3 text-red-400 hover:text-red-300 font-medium transition-colors"
+                  >
+                    Logout
+                  </button>
+                </>
               )}
             </div>
           </div>
